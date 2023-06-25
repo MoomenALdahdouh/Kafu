@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('company_plans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('plan_id')->constrained('plans');
             $table->text('name')->unique()->comment('must be unique');

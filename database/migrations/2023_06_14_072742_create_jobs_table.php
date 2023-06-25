@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('company_id')->constrained('companies');
             $table->string('title');
-            $table->text('description');
-            $table->string('image');
-            $table->text('tags');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->text('tags')->nullable();
             $table->double('salary')->nullable();
             $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->timestamps();

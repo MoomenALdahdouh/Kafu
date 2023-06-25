@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('incubators', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique()->default(uniqid());
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('key')->unique();
             $table->string('name');
             $table->string('logo')->nullable();
             $table->string('image')->nullable();
-            $table->string('name_officer');
+            $table->string('name_officer')->nullable();
             $table->string('email')->unique();
-            $table->string('mobile');
-            $table->foreignId('country_code_id')->constrained('country_codes');
-            $table->foreignId('country_id')->constrained('countries');
-            $table->text('message');
-            $table->string('password');
+            $table->string('mobile')->nullable();
+            $table->double('projects')->default(0);
+            $table->foreignId('country_code_id')->nullable()->constrained('country_codes');
+            $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->text('message')->nullable();
             $table->tinyInteger('condition')->default(0)->comment('0:not approved, 1:approved');
             $table->timestamps();
         });

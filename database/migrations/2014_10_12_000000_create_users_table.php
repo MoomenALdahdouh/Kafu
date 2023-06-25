@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('mobile_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('type')->default(1)->comment('0: guest, 1: user');
+            $table->tinyInteger('type')->default(1)->comment('0: incubator, 1: company');
             $table->tinyInteger('status')->default(1)->comment('0:not active, 1:active, 2:blocked')->index();
             $table->tinyInteger('condition')->default(0)->comment('0:not approved, 1:approved');
             $table->softDeletes();

@@ -18,6 +18,8 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/home';
+    public const ADMIN = '/admin';
+    public const COMPANY = '/company';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -35,6 +37,12 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            Route::middleware('admin')
+                ->group(base_path('routes/admin.php'));
+
+            Route::middleware('company')
+                ->group(base_path('routes/company.php'));
         });
     }
 }
