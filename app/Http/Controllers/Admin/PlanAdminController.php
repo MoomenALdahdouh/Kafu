@@ -25,7 +25,7 @@ class PlanAdminController extends Controller
                 $query->where('name', 'LIKE', '%' . $value . '%');
             })
             ->paginate($request->page_size ?? 10);
-        return Inertia::render('plan/index', [
+        return Inertia::render('admin/plan', [
             'items' => $data,
         ]);
     }

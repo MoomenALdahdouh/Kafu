@@ -24,7 +24,10 @@ class JobController extends Controller
                 $query->latest();
             })
             ->when($request->search, function ($query, $value) {
-                $query->where('name', 'LIKE', '%' . $value . '%');
+                $query->where('title', 'LIKE', '%' . $value . '%');
+            })
+            ->when($request->search, function ($query, $value) {
+                $query->where('description', 'LIKE', '%' . $value . '%');
             })
             ->paginate($request->page_size ?? 10);
         return Inertia::render('job/index', [
@@ -35,34 +38,18 @@ class JobController extends Controller
     public function store(Request $request)
     {
         $data = $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'name_officer' => 'required|string',
-            'email' => 'required|string|email|max:255|unique:users',
-            'mobile' => 'required',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'title' => 'required',
+            'salary' => 'required',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'type' => 1,
-            'password' => Hash::make($request->password),
+        $company = Company::query()->where('user_id', auth('web')->user()->id)->get()->first();
+        $job = Job::create([
+            'user_id' => auth('web')->user()->id,
+            'company_id' => $company->id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'salary' => $request->salary,
         ]);
-
-        if ($user) {
-            $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
-            $job = Job::create([
-                'key' => uniqid(),
-                'user_id' => $user->id,
-                'incubator_key' => $incubator->key,
-                'incubator_id' => $incubator->id,
-                'name' => $request->name,
-                'email' => $request->email,
-                'mobile' => $request->mobile,
-                'name_officer' => $request->name_officer,
-            ]);
-        }
-
 
         return redirect()->back()->with('message', [
             'type' => 'success',

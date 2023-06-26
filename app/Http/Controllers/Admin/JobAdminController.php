@@ -26,7 +26,7 @@ class JobAdminController extends Controller
                 $query->where('name', 'LIKE', '%' . $value . '%');
             })
             ->paginate($request->page_size ?? 10);
-        return Inertia::render('job/index', [
+        return Inertia::render('admin/job', [
             'items' => $data,
         ]);
     }

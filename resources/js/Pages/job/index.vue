@@ -53,64 +53,29 @@
                 </v-toolbar>
                 <v-card-text class="pt-4">
                     <v-text-field
-                        v-model="form.name"
-                        label="Job Name"
-                        :error-messages="form.errors.name"
+                        v-model="form.title"
+                        label="Job title"
+                        :error-messages="form.errors.title"
                         type="text"
                         outlined
                         dense
                     />
                     <v-text-field
-                        v-model="form.name_officer"
-                        label="Officer Name"
-                        :error-messages="form.errors.name_officer"
+                        v-model="form.description"
+                        label="Job Description"
+                        :error-messages="form.errors.description"
                         type="text"
                         outlined
                         dense
                     />
                     <v-text-field
-                        v-model="form.email"
-                        label="Email"
-                        :error-messages="form.errors.email"
+                        v-model="form.salary"
+                        label="Job Salary"
+                        type="number"
+                        :error-messages="form.errors.salary"
                         outlined
                         dense
                     />
-                    <v-text-field
-                        v-model="form.mobile"
-                        label="Mobile"
-                        :error-messages="form.errors.mobile"
-                        outlined
-                        dense
-                    />
-                    <v-text-field
-                        v-model="form.password"
-                        prepend-inner-icon="mdi-lock"
-                        label="Password"
-                        outlined
-                        dense
-                        :error-messages="form.errors.password"
-                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="showPassword ? 'text' : 'password'"
-                        @click:append="showPassword = !showPassword"
-                    />
-                    <v-text-field
-                        v-model="form.password_confirmation"
-                        prepend-inner-icon="mdi-lock"
-                        label="Password Confirmation"
-                        :error-messages="form.errors.password_confirmation"
-                        outlined
-                        dense
-                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="showPassword ? 'text' : 'password'"
-                        @click:append="showPassword = !showPassword"
-                    />
-                    <!--          <v-textarea
-                                v-model="form.address"
-                                label="Address"
-                                :error-messages="form.errors.address"
-                                outlined
-                                dense
-                              />-->
                     <div class="d-flex"></div>
                 </v-card-text>
                 <v-card-actions>
@@ -153,10 +118,9 @@ export default {
         return {
             headers: [
                 {text: "No", value: "index", sortable: false},
-                {text: "Name", value: "name"},
-                {text: "Officer Name", value: "name_officer"},
-                {text: "Email", value: "email"},
-                {text: "Mobile", value: "mobile"},
+                {text: "Title", value: "title"},
+                {text: "Description", value: "description"},
+                {text: "Salary", value: "salary"},
                 {text: "Created At", value: "created_at"},
                 {text: "Actions", value: "action", sortable: false},
             ],
@@ -182,12 +146,9 @@ export default {
             search: null,
             params: {},
             form: this.$inertia.form({
-                name: null,
-                name_officer: null,
-                email: null,
-                mobile: null,
-                password: null,
-                password_confirmation: null,
+                title: null,
+                description: null,
+                salary: null,
             }),
         };
     },
@@ -232,10 +193,9 @@ export default {
         },
         editItem(item) {
             this.form.clearErrors();
-            this.form.name = item.name;
-            this.form.email = item.email;
-            this.form.name_officer = item.name_officer;
-            this.form.mobile = item.mobile;
+            this.form.title = item.title;
+            this.form.description = item.description;
+            this.form.salary = item.salary;
             this.isUpdate = true;
             this.itemId = item.id;
             this.dialog = true;

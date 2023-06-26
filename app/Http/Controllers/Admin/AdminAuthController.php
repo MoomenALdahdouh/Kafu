@@ -15,7 +15,11 @@ class AdminAuthController extends Controller
 {
     public function index()
     {
-        return Inertia::render("admin/index");
+        return Inertia::render("admin/index", [
+            'auth' => [
+                'user' => auth("admin"),
+            ],
+        ]);
     }
 
     public function auth()
@@ -45,10 +49,14 @@ class AdminAuthController extends Controller
         ]);
 
         if ($credentials->passes()) {
-            $user = Admin::query()->where('email',$request->email)->get()->first();
+           // $user = Admin::query()->where('email',$request->email)->get()->first();
             //Auth::guard('admin')->login($user);
             Auth::guard("admin")->attempt(['email' => $request->email, 'password' => $request->password]);
-            return redirect(url('admin'));
+            return Inertia::render("admin/index", [
+                'auth' => [
+                    'user' => auth("admin"),
+                ],
+            ]);
         }
         else{
             $convertedMessages = array_combine(
@@ -57,14 +65,8 @@ class AdminAuthController extends Controller
                     return $errors[0];
                 }, $credentials->errors()->toArray())
             );
-            return Inertia::render('admin/auth', [
+            return Inertia::render('admin/index', [
                 'errors' => $convertedMessages,
-                /*'appName' => 'Laravel',
-                'canResetPassword' => true,
-                'status' => null,
-                'auth' => [
-                    'user' => null,
-                ],*/
             ]);
         }
 

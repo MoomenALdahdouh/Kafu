@@ -66,7 +66,7 @@ export default {
         return {
             drawer: !this.$vuetify.breakpoint.smAndDown,
             items: [
-                {icon: "mdi-apps", title: "Home", to: "home"},
+                {icon: "mdi-apps", title: "Home", to: "admin.index"},
                 {icon: "mdi-account", title: "Incubators", to: "admin.incubator.index"},
                 {icon: "mdi-account", title: "Companies", to: "admin.company.index"},
                 {icon: "mdi-account", title: "Jobs", to: "admin.job.index"},

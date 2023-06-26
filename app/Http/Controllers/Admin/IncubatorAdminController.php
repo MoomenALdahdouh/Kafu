@@ -24,7 +24,7 @@ class IncubatorAdminController extends Controller
                 $query->where('name', 'LIKE', '%' . $value . '%');
             })
             ->paginate($request->page_size ?? 10);
-        return Inertia::render('incubator/index', [
+        return Inertia::render('admin/incubator', [
             'items' => $data,
         ]);
     }

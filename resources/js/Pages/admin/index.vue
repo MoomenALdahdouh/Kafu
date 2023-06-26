@@ -21,12 +21,12 @@ export default {
                 {
                     text: "App",
                     disabled: false,
-                    href: "/home",
+                    href: "/admin",
                 },
                 {
                     text: "Home",
                     disabled: true,
-                    href: "/home",
+                    href: "/admin",
                 },
             ],
         }

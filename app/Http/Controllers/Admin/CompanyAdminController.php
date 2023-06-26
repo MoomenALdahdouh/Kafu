@@ -15,8 +15,7 @@ class CompanyAdminController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Company::query()->where('user_id', '==',auth('web')->user()->id)
-            ->when($request->sort_by, function ($query, $value) {
+        $data = Company::query()->when($request->sort_by, function ($query, $value) {
             $query->orderBy($value, request('order_by', 'asc'));
         })
             ->when(!isset($request->sort_by), function ($query) {
@@ -26,8 +25,11 @@ class CompanyAdminController extends Controller
                 $query->where('name', 'LIKE', '%' . $value . '%');
             })
             ->paginate($request->page_size ?? 10);
-        return Inertia::render('company/index', [
+        return Inertia::render('admin/company', [
             'items' => $data,
+            'auth' => [
+                'user' => auth("admin"),
+            ],
         ]);
     }
 
@@ -49,12 +51,12 @@ class CompanyAdminController extends Controller
         ]);
 
         if ($user){
-            $incubator = Incubator::query()->where('user_id',auth('web')->user()->id)->get()->first();
+            //$incubator = Incubator::query()->where('user_id',auth('admin')->user()->id)->get()->first();
             $company = Company::create([
                 'key' => uniqid(),
                 'user_id' => $user->id,
-                'incubator_key' => $incubator->key,
-                'incubator_id' => $incubator->id,
+                'incubator_key' => 0,
+                'incubator_id' => 0,
                 'name' => $request->name,
                 'email' => $request->email,
                 'mobile' => $request->mobile,
