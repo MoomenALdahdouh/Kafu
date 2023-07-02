@@ -1,5 +1,5 @@
 <?php
-
+/*
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\CompanyAdminController;
 use App\Http\Controllers\Admin\IncubatorAdminController;
@@ -33,4 +33,4 @@ Route::prefix('admin')
             });
     });
 
-
+*/

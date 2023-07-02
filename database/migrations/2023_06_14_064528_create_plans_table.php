@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('image')->nullable();
             $table->double('price')->default(0);
             $table->integer('days')->default(0);
+            $table->text('features')->nullable();
             $table->tinyInteger('recharge')->default(0)->comment('0: not auto recharge, 1: auto recharge');
             $table->tinyInteger('free')->default(0)->comment('0: not free, 1: free')->index();
             $table->tinyInteger('type')->default(1)->comment('0: yearly, 1: monthly')->index();
