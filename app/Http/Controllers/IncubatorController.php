@@ -44,7 +44,7 @@ class IncubatorController extends Controller
             'type' => 1,
             'password' => Hash::make($request->password),
         ]);
-
+        $user->assignRole('Incubator');
         if ($user) {
             $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
             $incubator = Incubator::create([

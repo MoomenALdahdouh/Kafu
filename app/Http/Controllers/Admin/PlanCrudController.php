@@ -73,7 +73,7 @@ class PlanCrudController extends CrudController
 
         CRUD::field('name');
         CRUD::field('description');
-        CRUD::field('features');
+        CRUD::field('features')->type('select2_multiple');
         CRUD::field('image');
         CRUD::field('price');
         CRUD::field('days');

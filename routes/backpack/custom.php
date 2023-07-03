@@ -22,4 +22,6 @@ Route::group([
     Route::crud('incubator', 'IncubatorCrudController');
     Route::crud('company', 'CompanyCrudController');
     Route::crud('feature', 'FeatureCrudController');
+    Route::crud('permission', 'PermissionCrudController');
+    Route::crud('role', 'RoleCrudController');
 }); // this should be the absolute last line of this file

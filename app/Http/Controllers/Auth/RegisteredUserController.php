@@ -48,6 +48,7 @@ class RegisteredUserController extends Controller
             'type' => 0,
             'password' => Hash::make($request->password),
         ]);
+        $user->assignRole('Incubator');
         if ($user)
             $incubator = Incubator::create([
                 'key' => uniqid(),

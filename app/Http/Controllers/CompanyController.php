@@ -59,7 +59,7 @@ class CompanyController extends Controller
                 'type' => 1,
                 'password' => Hash::make($request->password),
             ]);
-
+            $user->assignRole('Company');
 
             if ($user) {
                 $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
@@ -96,7 +96,7 @@ class CompanyController extends Controller
             'type' => 1,
             'password' => Hash::make($request->password),
         ]);
-
+        $user->assignRole('Company');
         if ($user) {
             $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
             $company = Company::create([

@@ -7,3 +7,5 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('incubator') }}"><i class="nav-icon la la-question"></i> Incubators</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('company') }}"><i class="nav-icon la la-question"></i> Companies</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('feature') }}"><i class="nav-icon la la-question"></i> Features</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i class="nav-icon la la-question"></i> Permissions</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-question"></i> Roles</a></li>
