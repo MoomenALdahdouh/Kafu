@@ -10,31 +10,30 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-Route::get('about', function () {
-    return Inertia::render('about');
-})->name('about');
-
 Route::get('/', function () {
     return Inertia::render('index');
 })->name('/');
 
-Route::get('home', [HomeController::class, 'index'])->name('home');
-Route::resource('employee', EmployeeController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::resource('company', CompanyController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::get('home', [HomeController::class, 'index'])->middleware('auth:web')->name('home');
+
+Route::resource('company', CompanyController::class)
+    ->only(['index', 'store', 'update', 'destroy'])
+    ->middleware(['auth:web','permission:companies']);
+
 Route::get('register/company', [CompanyController::class, 'create_company'])->name('company.register');
+
 Route::post('register/company', [CompanyController::class, 'store_company'])->name('company.register.store');
-Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::resource('incubator', IncubatorController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::resource('plan', PlanController::class)->only(['index', 'store', 'update', 'destroy']);
+
+Route::resource('job', JobController::class)
+    ->only(['index', 'store', 'update', 'destroy'])
+    ->middleware(['auth:web','permission:jobs']);
+
+Route::resource('incubator', IncubatorController::class)
+    ->only(['index', 'store', 'update', 'destroy'])
+    ->middleware(['auth:web','permission:incubators']);
+
+Route::resource('plan', PlanController::class)
+    ->only(['index', 'store', 'update', 'destroy'])
+    ->middleware(['auth:web','permission:plans']);
 
 require __DIR__ . '/auth.php';

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules;
 
 class CompanyRequest extends FormRequest
 {
@@ -11,10 +12,17 @@ class CompanyRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    /* public function authorize()
+     {
+         // only allow updates if the user is logged in
+         return backpack_auth()->check();
+     }*/
+    public function authorize(): bool
     {
-        // only allow updates if the user is logged in
-        return backpack_auth()->check();
+        if (auth('web'))
+            return true;
+        else
+            return backpack_auth()->check();
     }
 
     /**
@@ -25,7 +33,11 @@ class CompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|string|max:255',
+            'name_officer' => 'required|string',
+            'email' => 'required|string|email|max:255|unique:users',
+            'mobile' => 'required',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
 

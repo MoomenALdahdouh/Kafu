@@ -11,11 +11,8 @@
         </v-card>
     </main-layout>
 </template>
-
 <script>
-//import AdminLayout from "../layouts/IncubatorLayout.vue";
 export default {
-    //components: { AdminLayout },
     data() {
         return {
             breadcrumbs: [

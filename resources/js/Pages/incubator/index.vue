@@ -144,11 +144,8 @@
 </template>
 
 <script>
-//import AdminLayout from "../../layouts/IncubatorLayout.vue";
-
 export default {
     props: ["items"],
-    //components: {AdminLayout},
     data() {
         return {
             headers: [

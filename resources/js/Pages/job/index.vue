@@ -109,11 +109,9 @@
 </template>
 
 <script>
-//import AdminLayout from "../../layouts/CompanyLayout.vue";
 
 export default {
     props: ["items"],
-    //components: {AdminLayout},
     data() {
         return {
             headers: [

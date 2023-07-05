@@ -14,7 +14,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        //dd(auth('web')->user()->roles->permissions);
         return Inertia::render('home', [
             'permissions' => getUserPermissions(),
         ]);
