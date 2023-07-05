@@ -14,9 +14,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        if (auth('web')->user()->type == 0)
-            return Inertia::render('incubator');
-        else
-            return Inertia::render('company');
+        //dd(auth('web')->user()->roles->permissions);
+        return Inertia::render('home', [
+            'permissions' => getUserPermissions(),
+        ]);
     }
 }

@@ -68,7 +68,7 @@ class PermissionsSeeder extends Seeder
             ],
             /*Admin Users Permissions*/
             [
-                'name' => 'web',
+                'name' => 'users',
                 'guard_name'=> 'web',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now(),
@@ -274,6 +274,12 @@ class PermissionsSeeder extends Seeder
             ],
             [
                 'name' => 'features_delete',
+                'guard_name'=> 'web',
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now(),
+            ],
+            [
+                'name' => 'dashboard',
                 'guard_name'=> 'web',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now(),

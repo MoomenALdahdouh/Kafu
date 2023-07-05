@@ -8,14 +8,20 @@ import {
 import { Link } from "@inertiajs/inertia-vue";
 import vuetify from "./plugins/vuetify";
 import { InertiaProgress } from "@inertiajs/progress";
+import MainLayout from "./layouts/MainLayout.vue";
+import ApplicationLogo from "./components/ApplicationLogo.vue";
 
 Vue.use(InertiaPlugin);
 Vue.component("Link", Link);
+Vue.component('main-layout', MainLayout);
 Vue.mixin({ methods: { route: window.route } });
 const app = document.getElementById("app");
 
 new Vue({
     vuetify,
+    components: {
+        ApplicationLogo
+    },
     render: h =>
         h(InertiaApp, {
             props: {

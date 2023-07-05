@@ -15,9 +15,11 @@ class JobController extends Controller
 {
     public function index(Request $request)
     {
-        $company = Company::query()->where('user_id', auth('web')->user()->id)->get()->first();
-        $data = Job::query()->where('company_id', $company->id)
-            ->when($request->sort_by, function ($query, $value) {
+        $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
+        $data = Job::query();
+        if ($incubator)
+            $data->where('incubator_key', $incubator->key);
+        $data->when($request->sort_by, function ($query, $value) {
                 $query->orderBy($value, request('order_by', 'asc'));
             })
             ->when(!isset($request->sort_by), function ($query) {
@@ -32,6 +34,7 @@ class JobController extends Controller
             ->paginate($request->page_size ?? 10);
         return Inertia::render('job/index', [
             'items' => $data,
+            'permissions' => getUserPermissions(),
         ]);
     }
 

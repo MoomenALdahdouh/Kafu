@@ -19,7 +19,8 @@ class RolesSeeder extends Seeder
         $admin_role->syncPermissions($admin_permissions);
 
         $company_permissions = Permission::query()
-            ->where('name', 'like', '%jobs%')
+            ->where('name', 'like', '%dashboard%')
+            ->orWhere('name', 'like', '%jobs%')
             ->orWhere('name', 'like', '%company%')
             ->pluck('id', 'id')
             ->all();
@@ -27,9 +28,10 @@ class RolesSeeder extends Seeder
         $company_role->syncPermissions($company_permissions);
 
         $incubator_permissions = Permission::query()
-            ->where('name', 'like', '%jobs%')
+            ->where('name', 'like', '%dashboard%')
+            ->orWhere('name', 'like', '%jobs%')
             ->orWhere('name', 'like', '%companies%')
-            ->orWhere('name', 'like', '%incubators%')
+            ->orWhere('name',  'incubator')
             ->pluck('id', 'id')
             ->all();
         $incubator_role = Role::query()->firstOrCreate(['name' => 'Incubator'], ['guard_name' => 'web']);

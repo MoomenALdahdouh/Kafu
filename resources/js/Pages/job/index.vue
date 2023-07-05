@@ -1,8 +1,8 @@
 <template>
-    <admin-layout>
+    <main-layout>
         <v-banner class="mb-4">
             <div class="d-flex flex-wrap justify-space-between">
-                <h5 class="text-h5 font-weight-bold">Jobs</h5>
+                <h5 class="text-h5 font-weight-bold">Jobs List</h5>
                 <v-breadcrumbs :items="breadcrumbs" class="pa-0"></v-breadcrumbs>
             </div>
         </v-banner>
@@ -105,15 +105,15 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </admin-layout>
+    </main-layout>
 </template>
 
 <script>
-import AdminLayout from "../../layouts/CompanyLayout.vue";
+//import AdminLayout from "../../layouts/CompanyLayout.vue";
 
 export default {
     props: ["items"],
-    components: {AdminLayout},
+    //components: {AdminLayout},
     data() {
         return {
             headers: [

@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AdminSeeder extends Seeder
 {
@@ -13,6 +16,10 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::factory(1)->create();
+        User::factory(1)->create()->each(
+            function ($superAdmin){
+                $superAdmin->assignRole('Admin');
+            }
+        );
     }
 }

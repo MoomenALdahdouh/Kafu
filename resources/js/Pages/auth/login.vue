@@ -71,11 +71,11 @@
 </template>
 
 <script>
-import ApplicationLogo from "../../components/ApplicationLogo.vue";
+//import ApplicationLogo from "../../components/ApplicationLogo.vue";
 import GuestLayout from "../../layouts/GuestLayout.vue"
 
 export default {
-  components: { ApplicationLogo, GuestLayout },
+  components: {  GuestLayout },
   data() {
     return {
       showPassword: false,

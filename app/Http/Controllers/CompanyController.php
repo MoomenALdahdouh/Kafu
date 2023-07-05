@@ -28,6 +28,7 @@ class CompanyController extends Controller
         return Inertia::render('company/index', [
             'items' => $data,
             'incubator_key' => auth('web')->user()->incubator->key,
+            'permissions' => getUserPermissions(),
         ]);
     }
 
@@ -96,7 +97,9 @@ class CompanyController extends Controller
             'type' => 1,
             'password' => Hash::make($request->password),
         ]);
+
         $user->assignRole('Company');
+
         if ($user) {
             $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
             $company = Company::create([

@@ -1,5 +1,5 @@
 <template>
-    <admin-layout>
+    <main-layout>
         <v-banner class="mb-4">
             <div class="d-flex flex-wrap justify-space-between">
                 <h5 class="text-h5 font-weight-bold">Compnay</h5>
@@ -140,15 +140,15 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </admin-layout>
+    </main-layout>
 </template>
 
 <script>
-import AdminLayout from "../../layouts/IncubatorLayout.vue";
+//import AdminLayout from "../../layouts/IncubatorLayout.vue";
 
 export default {
     props: ["items"],
-    components: {AdminLayout},
+    //components: {AdminLayout},
     data() {
         return {
             headers: [

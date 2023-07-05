@@ -1,5 +1,5 @@
 <template>
-  <admin-layout>
+  <main-layout>
     <v-banner class="mb-4">
       <div class="d-flex flex-wrap justify-space-between">
         <h5 class="text-h5 font-weight-bold">Home</h5>
@@ -9,13 +9,15 @@
     <v-card>
       <v-card-title>You're Loggin!</v-card-title>
     </v-card>
-  </admin-layout>
+  </main-layout>
 </template>
 
 <script>
-import AdminLayout from "../layouts/IncubatorLayout.vue";
+//import AdminLayout from "../layouts/IncubatorLayout.vue";
+//import MainLayout from "../layouts/MainLayout";
+
 export default {
-  components: { AdminLayout },
+  //components: { MainLayout },
   data() {
     return {
       breadcrumbs: [
