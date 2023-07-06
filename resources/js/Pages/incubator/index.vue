@@ -159,7 +159,7 @@ export default {
             ],
             breadcrumbs: [
                 {
-                    text: "App",
+                    text: "Dashboard",
                     disabled: false,
                     href: "/home",
                 },

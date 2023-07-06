@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Incubator extends Model
 {
-    use CrudTrait;
-    use HasFactory;
+    use CrudTrait, HasFactory, Searchable;
 
     protected $fillable = [
         'key',
@@ -36,4 +36,9 @@ class Incubator extends Model
         'password',
         'remember_token',
     ];
+
+    function companies()
+   {
+       return $this->hasMany(Company::class);
+   }
 }

@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    use CrudTrait;
-    use HasFactory;
+    use CrudTrait, HasFactory, Searchable;
 
     protected $fillable = [
         'user_id',
         'company_id',
-        'title',
+        'incubator_key',
+        'name',
         'description',
         'image',
         'tags',
@@ -22,4 +23,8 @@ class Job extends Model
         'country_id',
     ];
 
+    /*function companies()
+    {
+        return Company::query()->where('incubator_key', incubator()->id)->latest()->get();
+    }*/
 }

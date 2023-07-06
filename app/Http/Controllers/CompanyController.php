@@ -7,7 +7,9 @@ use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
 use App\Models\Incubator;
 use App\Models\User;
+use App\Traits\Messages;
 use App\Traits\Searchable;
+use App\Traits\UserTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -16,6 +18,7 @@ use Illuminate\Validation\Rules;
 
 class CompanyController extends Controller
 {
+    use Messages, UserTrait;
 
     public function index(Request $request)
     {
@@ -48,13 +51,10 @@ class CompanyController extends Controller
         if (Session::get('incubator_key'))
             $incubator = Incubator::query()->where('key', Session::get('incubator_key'))->get()->first();
         if ($incubator) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'type' => 1,
-                'password' => Hash::make($request->password),
-            ]);
-            $user->assignRole('Company');
+            $request_all = $request->all();
+            $request_all["type"] = 1;
+            $request_all["permission"] = 'Company';
+            $user = $this->createUser($request_all);
             if ($user) {
                 Company::create([
                     'key' => uniqid(),
@@ -75,13 +75,10 @@ class CompanyController extends Controller
 
     public function store(CompanyRequest $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'type' => 1,
-            'password' => Hash::make($request->password),
-        ]);
-        $user->assignRole('Company');
+        $request_all = $request->all();
+        $request_all["type"] = 1;
+        $request_all["permission"] = 'Company';
+        $user = $this->createUser($request_all);
         if ($user) {
             $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
             $company = Company::create([
@@ -95,27 +92,18 @@ class CompanyController extends Controller
                 'name_officer' => $request->name_officer,
             ]);
         }
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'text' => 'Success create company!',
-        ]);
+        return $this->withSuccessMessage('Success create company!');
     }
 
     public function update(Company $company, UpdateCompanyRequest $request)
     {
         $company->update($request->all());
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'text' => 'Success edit company!',
-        ]);
+        return $this->withSuccessMessage('Success edit company!');
     }
 
     public function destroy(Company $company)
     {
         $company->delete();
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'text' => 'Success delete company!',
-        ]);
+        return $this->withSuccessMessage('Success delete company!');
     }
 }

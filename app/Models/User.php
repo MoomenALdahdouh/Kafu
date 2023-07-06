@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function incubator()
     {
-        return $this->hasOne(Incubator::class);
+        return $this->hasOne(Incubator::class)->with('companies');
     }
 
     public function company()

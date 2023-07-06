@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreJobRequest;
+use App\Http\Requests\UpdateJobRequest;
 use App\Models\Company;
 use App\Models\Incubator;
 use App\Models\Job;
 use App\Models\User;
+use App\Traits\Messages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -13,75 +16,44 @@ use Illuminate\Validation\Rules;
 
 class JobController extends Controller
 {
+    use Messages;
+
     public function index(Request $request)
     {
-        $incubator = Incubator::query()->where('user_id', auth('web')->user()->id)->get()->first();
-        $data = Job::query();
-        if ($incubator)
-            $data->where('incubator_key', $incubator->key);
-        $data->when($request->sort_by, function ($query, $value) {
-                $query->orderBy($value, request('order_by', 'asc'));
-            })
-            ->when(!isset($request->sort_by), function ($query) {
-                $query->latest();
-            })
-            ->when($request->search, function ($query, $value) {
-                $query->where('title', 'LIKE', '%' . $value . '%');
-            })
-            ->when($request->search, function ($query, $value) {
-                $query->where('description', 'LIKE', '%' . $value . '%');
-            })
+        $data = Job::query()
+            ->forIncubator(auth('web')->user()->incubator->key)
+            ->orderByField($request->sort_by, $request->order_by)
+            ->search($request->search)
             ->paginate($request->page_size ?? 10);
         return Inertia::render('job/index', [
             'items' => $data,
+            'companies' => incubator()->companies,
             'permissions' => getUserPermissions(),
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreJobRequest $request)
     {
-        $data = $this->validate($request, [
-            'title' => 'required',
-            'salary' => 'required',
-        ]);
-
-        $company = Company::query()->where('user_id', auth('web')->user()->id)->get()->first();
-        $job = Job::create([
+        Job::create([
             'user_id' => auth('web')->user()->id,
-            'company_id' => $company->id,
-            'title' => $request->title,
+            'company_id' => companyId($request->company_id),
+            'incubator_key' => incubator_key(),
+            'name' => $request->name,
             'description' => $request->description,
             'salary' => $request->salary,
         ]);
-
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'text' => 'Success create job!',
-        ]);
+        return $this->withSuccessMessage('Success create job!');
     }
 
-    public function update(Job $job, Request $request)
+    public function update(Job $job, UpdateJobRequest $request)
     {
-        $data = $this->validate($request, [
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'name_officer' => 'required|string',
-            'mobile' => 'required',
-        ]);
-
-        $job->update($data);
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'text' => 'Success edit job!',
-        ]);
+        $job->update($request->all());
+        return $this->withSuccessMessage('Success edit job!');
     }
 
     public function destroy(Job $job)
     {
         $job->delete();
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'text' => 'Success delete job!',
-        ]);
+        return $this->withSuccessMessage('Success delete job!');
     }
 }

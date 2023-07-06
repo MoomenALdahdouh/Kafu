@@ -53,21 +53,32 @@
                 </v-toolbar>
                 <v-card-text class="pt-4">
                     <v-text-field
-                        v-model="form.title"
-                        label="Job title"
-                        :error-messages="form.errors.title"
+                        v-model="form.name"
+                        label="Job name"
+                        :error-messages="form.errors.name"
                         type="text"
                         outlined
                         dense
                     />
-                    <v-text-field
+                    <v-textarea
                         v-model="form.description"
                         label="Job Description"
                         :error-messages="form.errors.description"
                         type="text"
                         outlined
+                        dense>
+                    </v-textarea>
+                    <v-select
+                        label="Company"
+                        v-model="form.company_id"
+                        :items="companies"
+                        item-value="id"
+                        item-text="name"
+                        variant="outlined"
+                        :error-messages="form.errors.company_id"
+                        outlined
                         dense
-                    />
+                    ></v-select>
                     <v-text-field
                         v-model="form.salary"
                         label="Job Salary"
@@ -111,20 +122,25 @@
 <script>
 
 export default {
-    props: ["items"],
+    props: {
+        items : Object,
+        companies : Object,
+        permissions : Object,
+    },
     data() {
         return {
             headers: [
                 {text: "No", value: "index", sortable: false},
-                {text: "Title", value: "title"},
+                {text: "name", value: "name"},
                 {text: "Description", value: "description"},
+                {text: "Company", value: "company_id"},
                 {text: "Salary", value: "salary"},
                 {text: "Created At", value: "created_at"},
                 {text: "Actions", value: "action", sortable: false},
             ],
             breadcrumbs: [
                 {
-                    text: "App",
+                    text: "Dashboard",
                     disabled: false,
                     href: "/home",
                 },
@@ -144,9 +160,10 @@ export default {
             search: null,
             params: {},
             form: this.$inertia.form({
-                title: null,
+                name: null,
                 description: null,
                 salary: null,
+                company_id: null,
             }),
         };
     },
@@ -191,9 +208,10 @@ export default {
         },
         editItem(item) {
             this.form.clearErrors();
-            this.form.title = item.title;
+            this.form.name = item.name;
             this.form.description = item.description;
             this.form.salary = item.salary;
+            this.form.company_id = item.company_id;
             this.isUpdate = true;
             this.itemId = item.id;
             this.dialog = true;
