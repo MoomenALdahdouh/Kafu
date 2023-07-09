@@ -61,4 +61,5 @@ class User extends Authenticatable
     {
         return  auth('web')->user()->getPermissionsViaRoles()->pluck('name');
     }
+
 }

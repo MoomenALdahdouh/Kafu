@@ -6,6 +6,14 @@
                 <v-breadcrumbs :items="breadcrumbs" class="pa-0"></v-breadcrumbs>
             </div>
         </v-banner>
+        <div>
+            <!-- Your component content -->
+
+            <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="timeout" top>
+                {{ snackbarMessage }}
+                <v-btn color="white" text @click="snackbar = false">Close</v-btn>
+            </v-snackbar>
+        </div>
         <div class="d-flex flex-wrap align-center">
             <v-text-field
                 v-model="search"
@@ -69,6 +77,7 @@
                         dense>
                     </v-textarea>
                     <v-select
+                        v-if="hasCompanies"
                         label="Company"
                         v-model="form.company_id"
                         :items="companies"
@@ -123,9 +132,9 @@
 
 export default {
     props: {
-        items : Object,
-        companies : Object,
-        permissions : Object,
+        items: Object,
+        companies: Array,
+        permissions: Array,
     },
     data() {
         return {
@@ -159,6 +168,10 @@ export default {
             options: {},
             search: null,
             params: {},
+            snackbar: false,
+            snackbarMessage: '',
+            snackbarColor: '',
+            timeout: 3000,
             form: this.$inertia.form({
                 name: null,
                 description: null,
@@ -170,6 +183,9 @@ export default {
     computed: {
         formTitle() {
             return this.isUpdate ? "Edit Job" : "Create Job";
+        },
+        hasCompanies() {
+            return this.companies.length > 0;
         },
     },
     watch: {
@@ -203,6 +219,7 @@ export default {
         },
         create() {
             this.dialog = true;
+            this.isUpdate = false;
             this.form.reset();
             this.form.clearErrors();
         },
@@ -239,18 +256,43 @@ export default {
                         this.isUpdate = false;
                         this.itemId = null;
                         this.form.reset();
+                        this.handleSuccess();
                     },
                 });
             } else {
                 this.form.post(route("job.store"), {
                     preverseScroll: true,
-                    onSuccess: () => {
+                    onSuccess: (response) => {
                         this.isLoading = false;
                         this.dialog = false;
                         this.form.reset();
+                        //this.handleSuccess(response);
+                        this.handleError(response);
                     },
+                    onError: (response) => {
+                       // this.handleError(response.message);
+                    }
                 });
             }
+        },
+        handleSuccess(response) {
+            console.log(response)
+            this.isLoading = false;
+            this.dialog = false;
+            this.isUpdate = false;
+            this.itemId = null;
+            this.form.reset();
+            this.snackbarMessage = response.message;
+            this.snackbarColor = 'success';
+            this.snackbar = true;
+        },
+        handleError(response) {
+            this.isLoading = false;
+            this.dialog = false;
+            this.form.reset();
+            this.snackbarMessage = 'Your Wallet is empty, Recharge and subscribe!';
+            this.snackbarColor = 'error';
+            this.snackbar = true;
         },
     },
 };

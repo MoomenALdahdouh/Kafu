@@ -14,14 +14,15 @@ class Plan extends Model
     protected $fillable = [
         'name',
         'description',
-        'image',
+       //'image',
         'price',
         'days',
-        'recharge',
-        'free',
+        'budget',
         'type',
+        /*'recharge',
+        'free',
         'status',
-        'sort',
+        'sort',*/
     ];
 
     public function features()

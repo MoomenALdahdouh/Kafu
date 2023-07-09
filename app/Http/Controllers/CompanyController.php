@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
+use App\Models\CompanyPlan;
 use App\Models\Incubator;
+use App\Models\Plan;
 use App\Models\User;
 use App\Traits\Messages;
 use App\Traits\Searchable;
@@ -56,7 +58,7 @@ class CompanyController extends Controller
             $request_all["permission"] = 'Company';
             $user = $this->createUser($request_all);
             if ($user) {
-                Company::create([
+                $company = Company::create([
                     'key' => uniqid(),
                     'user_id' => $user->id,
                     'incubator_key' => $incubator->key,
@@ -66,6 +68,18 @@ class CompanyController extends Controller
                     'mobile' => $request->mobile,
                     'name_officer' => $request->name_officer,
                 ]);
+                $plan = Plan::query()->get()->firstOrFail();
+                if ($plan)
+                    $c_plan = CompanyPlan::create([
+                        'user_id' => $user->id,
+                        'plan_id' => $plan->id,
+                        'company_id' => $company->id,
+                        'name' => $plan->name,
+                        'description' => $plan->description,
+                        'price' => $plan->price,
+                        'days' => $plan->days,
+                        'budget' => $plan->budget,
+                    ]);
             }
         } else
             return Inertia::render('company/notfound');
@@ -91,6 +105,18 @@ class CompanyController extends Controller
                 'mobile' => $request->mobile,
                 'name_officer' => $request->name_officer,
             ]);
+            $plan = Plan::query()->get()->where('type',1)->firstOrFail();
+            if ($plan)
+                $c_plan = CompanyPlan::create([
+                    'user_id' => $user->id,
+                    'plan_id' => $plan->id,
+                    'company_id' => $company->id,
+                    'name' => $plan->name,
+                    'description' => $plan->description,
+                    'price' => $plan->price,
+                    'days' => $plan->days,
+                    'budget' => $plan->budget,
+                ]);
         }
         return $this->withSuccessMessage('Success create company!');
     }

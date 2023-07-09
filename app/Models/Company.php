@@ -22,4 +22,14 @@ class Company extends Model
         'name_officer',
     ];
 
+    function plan()
+    {
+        return $this->hasOne(CompanyPlan::class)->where('status','=',1);
+    }
+
+    function plans()
+    {
+        return $this->hasMany(CompanyPlan::class);
+    }
+
 }

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePlanRequest;
+use App\Http\Requests\UpdatePlanRequest;
 use App\Models\Incubator;
 use App\Models\Plan;
 use App\Models\User;
+use App\Traits\Messages;
+use App\Traits\UserTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -12,32 +16,22 @@ use Inertia\Inertia;
 
 class PlanController extends Controller
 {
+    use Messages, UserTrait;
+
     public function index(Request $request)
     {
-        $data = Plan::when($request->sort_by, function ($query, $value) {
-            $query->orderBy($value, request('order_by', 'asc'));
-        })
-            ->when(!isset($request->sort_by), function ($query) {
-                $query->latest();
-            })
-            ->when($request->search, function ($query, $value) {
-                $query->where('name', 'LIKE', '%' . $value . '%');
-            })
+        $data = Plan::query()
+            ->orderByField($request->sort_by, $request->order_by)
+            ->search($request->search)
             ->paginate($request->page_size ?? 10);
         return Inertia::render('plan/index', [
             'items' => $data,
+            'permissions' => getUserPermissions(),
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StorePlanRequest $request)
     {
-        $data = $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'name_officer' => 'required|string',
-            'email' => 'required|string|email|max:255|unique:users',
-            'mobile' => 'required',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
         $user = User::create([
             'name' => $request->name,
@@ -67,7 +61,7 @@ class PlanController extends Controller
         ]);
     }
 
-    public function update(Plan $plan, Request $request)
+    public function update(Plan $plan, UpdatePlanRequest $request)
     {
         $data = $this->validate($request, [
             'name' => 'required|string',

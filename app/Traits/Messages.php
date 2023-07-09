@@ -4,10 +4,10 @@ namespace App\Traits;
 
 trait Messages
 {
-    private function withSuccessMessage($message)
+    public static function withSuccessMessage($message,$type = 'success')
     {
         return redirect()->back()->with('message', [
-            'type' => 'success',
+            'type' => $type,
             'text' => $message,
         ]);
     }

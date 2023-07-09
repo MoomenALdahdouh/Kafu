@@ -16,11 +16,12 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('plan_id')->constrained('plans');
-            $table->text('name')->unique()->comment('must be unique');
+            $table->text('name')->nullable();
             $table->text('description')->nullable();
             $table->text('image')->nullable();
             $table->double('price')->default(0);
             $table->integer('days')->default(0);
+            $table->double('budget')->default(0);
             $table->tinyInteger('recharge')->default(0)->comment('0: not auto recharge, 1: auto recharge');
             $table->tinyInteger('free')->default(0)->comment('0: not free, 1: free')->index();
             $table->tinyInteger('type')->default(1)->comment('0: yearly, 1: monthly')->index();

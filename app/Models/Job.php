@@ -15,6 +15,8 @@ class Job extends Model
         'user_id',
         'company_id',
         'incubator_key',
+        'plan_id',
+        'budget',
         'name',
         'description',
         'image',

@@ -44,6 +44,7 @@
                 <v-icon dark>mdi-account</v-icon>
                 <div class="pl-3">
                     <span class="body-1 font-weight-medium">{{ user.name }}</span>
+                    <strong class="body-1 font-weight-medium success" v-if="hasPermission('company')">Wallet {{ wallet }} $</strong>
                 </div>
             </div>
         </v-app-bar>
@@ -81,6 +82,9 @@ export default {
         user() {
             return this.$page.props.auth.user;
         },
+        wallet() {
+            return this.$page.props.wallet;
+        },
         indexMenu() {
             const inertiaUrl = this.$inertia.page.url.split("?")[0];
             const index = this.items.findIndex((item) => {
@@ -90,7 +94,7 @@ export default {
             return index;
         },
     },
-    watch: {
+    /*watch: {
         $page: {
             handler() {
                 const message = this.$page.props.flash.message;
@@ -106,7 +110,7 @@ export default {
                 }
             },
         },
-    },
+    },*/
     methods: {
         logout() {
             this.$inertia.post("/logout");

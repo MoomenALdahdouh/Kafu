@@ -37,19 +37,22 @@ class PlanCrudController extends CrudController
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
+
     protected function setupListOperation()
     {
         CRUD::column('name');
         CRUD::column('description');
-        CRUD::column('features')->type('relationship');
-        CRUD::column('image');
+       // CRUD::column('features')->type('relationship');
+        //CRUD::column('image');
         CRUD::column('price');
         CRUD::column('days');
-        CRUD::column('recharge');
+        CRUD::column('budget');
+        CRUD::column('type');
+       /* CRUD::column('recharge');
         CRUD::column('free');
         CRUD::column('type');
         CRUD::column('status');
-        CRUD::column('sort');
+        CRUD::column('sort');*/
         CRUD::column('created_at');
         CRUD::column('updated_at');
         CRUD::column('deleted_at');
@@ -73,15 +76,17 @@ class PlanCrudController extends CrudController
 
         CRUD::field('name');
         CRUD::field('description');
-        CRUD::field('features')->type('select2_multiple');
-        CRUD::field('image');
+        //CRUD::field('features');
+        //CRUD::field('image');
         CRUD::field('price');
         CRUD::field('days');
-        CRUD::field('recharge');
+        CRUD::field('budget');
+        CRUD::field('type');
+        /*CRUD::field('recharge');
         CRUD::field('free');
         CRUD::field('type');
         CRUD::field('status');
-        CRUD::field('sort');
+        CRUD::field('sort');*/
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
