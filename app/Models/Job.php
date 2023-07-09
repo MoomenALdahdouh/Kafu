@@ -22,7 +22,6 @@ class Job extends Model
         'image',
         'tags',
         'salary',
-        'country_id',
     ];
 
     /*function companies()

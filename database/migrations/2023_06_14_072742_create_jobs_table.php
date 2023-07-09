@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('company_id')->constrained('companies');
-            $table->foreignId('plan_id')->constrained('plans');
+            //$table->foreignId('company_plans_id')->constrained('companies_plan');
+            $table->integer('plan_id');
             $table->string('incubator_key');
             $table->string('name');
             $table->text('description')->nullable();

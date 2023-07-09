@@ -11,10 +11,11 @@ function getUserPermissions()
 
 function getCompany()
 {
-    if (company())
-        return company();
-    else
-        return Company::query()->where('user_id', auth('web')->user()->id)->get()->first()->id;
+    if (auth()->user()->can('company'))
+        if (company())
+            return company();
+        else
+            return Company::query()->where('user_id', auth('web')->user()->id)->get()->first()->id;
 }
 
 function incubator()
@@ -47,4 +48,13 @@ function companyId($company_id)
     if (!$company_id)
         $company_id = Company::query()->where('user_id', auth('web')->user()->id)->get()->first()->id;
     return $company_id;
+}
+
+
+function findCompany($id)
+{
+    $company = Company::query()->find($id);
+    if (!$company)
+        $company = Company::query()->where('user_id', auth('web')->user()->id)->get()->first();
+    return $company;
 }

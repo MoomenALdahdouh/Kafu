@@ -22,4 +22,12 @@ trait Searchable
     {
         return $query->where('incubator_key', $incubatorKey);
     }
+
+    public function scopeForCompany($query)
+    {
+        if (auth()->user()->can("company"))
+            return $query->where('company_id', company()->id);
+        else
+           return $query;
+    }
 }
