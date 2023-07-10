@@ -24,8 +24,8 @@ class Job extends Model
         'salary',
     ];
 
-    /*function companies()
+    function company()
     {
-        return Company::query()->where('incubator_key', incubator()->id)->latest()->get();
-    }*/
+        return $this->hasOne(Company::class,'id','company_id');
+    }
 }
