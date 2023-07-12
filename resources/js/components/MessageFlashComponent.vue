@@ -1,40 +1,29 @@
 <template>
-    <div>
-        <!-- Your component content -->
-        <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="timeout" top>
-            {{ snackbarMessage }}
-            <v-btn color="white" text @click="snackbar = false">Close</v-btn>
-        </v-snackbar>
-    </div>
+    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="timeout" top>
+        {{ snackbarMessage }}
+        <v-btn color="white" text @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
 </template>
 
 <script>
 export default {
+    props: {
+        message: {
+            type: String,
+            required: true
+        },
+        color: {
+            type: String,
+            default: 'success'
+        }
+    },
     data() {
         return {
             snackbar: false,
             snackbarMessage: '',
             snackbarColor: '',
-            timeout: 3000, // Adjust the timeout as needed
+            timeout: 3000,
         };
-    },
-    methods: {
-        someAction() {
-            // Perform your action that triggers the server request
-            axios.post('/your-url')
-                .then(response => {
-                    // Handle the success response
-                    this.snackbarMessage = response.data.message;
-                    this.snackbarColor = 'success';
-                    this.snackbar = true;
-                })
-                .catch(error => {
-                    // Handle the error response
-                    this.snackbarMessage = 'An error occurred.';
-                    this.snackbarColor = 'error';
-                    this.snackbar = true;
-                });
-        },
-    },
+    }
 };
 </script>

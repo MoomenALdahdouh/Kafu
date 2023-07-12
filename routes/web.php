@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncubatorController;
 use App\Http\Controllers\JobController;

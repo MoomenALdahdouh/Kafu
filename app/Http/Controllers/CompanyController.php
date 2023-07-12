@@ -118,18 +118,18 @@ class CompanyController extends Controller
                     'budget' => $plan->budget,
                 ]);
         }
-        return $this->withSuccessMessage('Success create company!');
+        return $this->withMessage('Success create company!');
     }
 
     public function update(Company $company, UpdateCompanyRequest $request)
     {
         $company->update($request->all());
-        return $this->withSuccessMessage('Success edit company!');
+        return $this->withMessage('Success edit company!');
     }
 
     public function destroy(Company $company)
     {
         $company->delete();
-        return $this->withSuccessMessage('Success delete company!');
+        return $this->withMessage('Success delete company!');
     }
 }

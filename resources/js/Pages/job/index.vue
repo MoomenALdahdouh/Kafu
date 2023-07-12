@@ -6,14 +6,11 @@
                 <v-breadcrumbs :items="breadcrumbs" class="pa-0"></v-breadcrumbs>
             </div>
         </v-banner>
-        <div>
-            <!-- Your component content -->
-
-            <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="timeout" top>
-                {{ snackbarMessage }}
-                <v-btn color="white" text @click="snackbar = false">Close</v-btn>
-            </v-snackbar>
-        </div>
+        <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="timeout" top>
+            {{ snackbarMessage }}
+            <v-btn color="white" text @click="snackbar = false">Close</v-btn>
+        </v-snackbar>
+        <!--<v-alert v-if="$page.props.flash.message" :type="$page.props.flash.message.type">{{$page.props.flash.message.text}}</v-alert>-->
         <div class="d-flex flex-wrap align-center">
             <v-text-field
                 v-model="search"
@@ -44,6 +41,9 @@
             <template #[`item.index`]="{ index }">
                 {{ (options.page - 1) * options.itemsPerPage + index + 1 }}
             </template>
+            <!--            <template #item.company="{ item }">
+                            {{ item.company.name }}
+                        </template>-->
             <template #[`item.action`]="{ item }">
                 <v-btn x-small color="yellow" @click="editItem(item)">
                     <v-icon small> mdi-pencil</v-icon>
@@ -60,43 +60,44 @@
                     }}
                 </v-toolbar>
                 <v-card-text class="pt-4">
-                    <v-text-field
-                        v-model="form.name"
-                        label="Job name"
-                        :error-messages="form.errors.name"
-                        type="text"
-                        outlined
-                        dense
-                    />
-                    <v-textarea
-                        v-model="form.description"
-                        label="Job Description"
-                        :error-messages="form.errors.description"
-                        type="text"
-                        outlined
-                        dense>
-                    </v-textarea>
-                    <v-select
-                        v-if="hasCompanies"
-                        label="Company"
-                        v-model="form.company_id"
-                        :items="companies"
-                        item-value="id"
-                        item-text="name"
-                        variant="outlined"
-                        :error-messages="form.errors.company_id"
-                        outlined
-                        dense
-                    ></v-select>
-                    <v-text-field
-                        v-model="form.salary"
-                        label="Job Salary"
-                        type="number"
-                        :error-messages="form.errors.salary"
-                        outlined
-                        dense
-                    />
-                    <div class="d-flex"></div>
+                    <v-form>
+                        <v-text-field
+                            v-model="form.name"
+                            label="Job name"
+                            :error-messages="form.errors.name"
+                            type="text"
+                            outlined
+                            dense
+                        ></v-text-field>
+                        <v-textarea
+                            v-model="form.description"
+                            label="Job Description"
+                            :error-messages="form.errors.description"
+                            type="text"
+                            outlined
+                            dense
+                        ></v-textarea>
+                        <v-select
+                            v-if="hasCompanies"
+                            label="Company"
+                            v-model="form.company_id"
+                            :items="companies"
+                            item-value="id"
+                            item-text="name"
+                            variant="outlined"
+                            :error-messages="form.errors.company_id"
+                            outlined
+                            dense
+                        ></v-select>
+                        <v-text-field
+                            v-model="form.salary"
+                            label="Job Salary"
+                            type="number"
+                            :error-messages="form.errors.salary"
+                            outlined
+                            dense
+                        ></v-text-field>
+                    </v-form>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel</v-btn>
@@ -142,7 +143,7 @@ export default {
                 {text: "No", value: "index", sortable: false},
                 {text: "name", value: "name"},
                 {text: "Description", value: "description"},
-                {text: "Company", value: "company_id"},
+                /*{text: "Company", value: "company"},*/
                 {text: "Salary", value: "salary"},
                 {text: "Created At", value: "created_at"},
                 {text: "Actions", value: "action", sortable: false},
@@ -250,13 +251,13 @@ export default {
             if (this.isUpdate) {
                 this.form.put(route("job.update", this.itemId), {
                     preverseScroll: true,
-                    onSuccess: () => {
+                    onSuccess: (response) => {
                         this.isLoading = false;
                         this.dialog = false;
                         this.isUpdate = false;
                         this.itemId = null;
                         this.form.reset();
-                        this.handleSuccess();
+                        this.handleMessage(response);
                     },
                 });
             } else {
@@ -266,32 +267,23 @@ export default {
                         this.isLoading = false;
                         this.dialog = false;
                         this.form.reset();
-                        //this.handleSuccess(response);
-                        this.handleError(response);
+                        this.handleMessage(response);
                     },
                     onError: (response) => {
-                       // this.handleError(response.message);
+                        //this.handleMessage(response);
                     }
                 });
             }
         },
-        handleSuccess(response) {
+        handleMessage(response) {
             console.log(response)
             this.isLoading = false;
             this.dialog = false;
             this.isUpdate = false;
             this.itemId = null;
             this.form.reset();
-            this.snackbarMessage = response.message;
-            this.snackbarColor = 'success';
-            this.snackbar = true;
-        },
-        handleError(response) {
-            this.isLoading = false;
-            this.dialog = false;
-            this.form.reset();
-            this.snackbarMessage = 'Your Wallet is empty, Recharge and subscribe!';
-            this.snackbarColor = 'error';
+            this.snackbarMessage = response.props.flash.message.text;
+            this.snackbarColor = response.props.flash.message.type;
             this.snackbar = true;
         },
     },

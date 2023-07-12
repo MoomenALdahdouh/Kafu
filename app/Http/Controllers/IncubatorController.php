@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIncubatorRequest;
 use App\Http\Requests\UpdateIncubatorRequest;
 use App\Models\Incubator;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Traits\Messages;
 use App\Traits\UserTrait;
@@ -22,7 +21,6 @@ class IncubatorController extends Controller
     public function index(Request $request)
     {
         $data = Incubator::query()
-            //->forIncubator(auth('web')->user()->incubator->key)
             ->orderByField($request->sort_by, $request->order_by)
             ->search($request->search)
             ->paginate($request->page_size ?? 10);
@@ -64,12 +62,12 @@ class IncubatorController extends Controller
     public function update(Incubator $incubator, UpdateIncubatorRequest $request)
     {
         $incubator->update($request->all());
-        return $this->withSuccessMessage('Success edit incubator!');
+        return $this->withMessage('Success edit incubator!');
     }
 
     public function destroy(Incubator $incubator)
     {
         $incubator->delete();
-        return $this->withSuccessMessage('Success delete incubator!');
+        return $this->withMessage('Success delete incubator!');
     }
 }

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->double('budget')->default(50);
             $table->double('salary')->nullable();
             $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->tinyInteger('status')->default(0)->comment('0:not published, 1:published, 2:blocked');
             $table->timestamps();
         });
     }

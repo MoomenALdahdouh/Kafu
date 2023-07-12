@@ -43,7 +43,8 @@
             <div class="d-flex align-center">
                 <v-icon dark>mdi-account</v-icon>
                 <div class="pl-3">
-                    <span class="body-1 font-weight-medium">{{ user.name }}</span>
+                    <span class="body-1 font-weight-
+                    medium">{{ user.name }}</span>
                     <strong class="body-1 font-weight-medium success" v-if="hasPermission('company')">Wallet {{ wallet }} $</strong>
                 </div>
             </div>
