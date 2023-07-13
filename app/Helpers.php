@@ -14,8 +14,7 @@ function getCompany()
     if (auth()->user()->can('company'))
         if (company())
             return company();
-        else
-            return Company::query()->where('user_id', auth('web')->user()->id)->get()->first()->id;
+    return Company::query()->where('user_id', auth('web')->user()->id)->get()->first()->id;
 }
 
 function incubator()

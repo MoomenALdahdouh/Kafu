@@ -4,21 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
-use App\Models\Company;
-use App\Models\CompanyPlan;
-use App\Models\Incubator;
 use App\Models\Job;
-use App\Models\User;
 use App\Services\JobService;
 use App\Traits\JobTrait;
 use App\Traits\Messages;
 use App\Traits\PlanTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Illuminate\Validation\Rules;
-
 class JobController extends Controller
 {
     use Messages, PlanTrait, JobTrait;
@@ -43,20 +35,10 @@ class JobController extends Controller
 
     public function store(StoreJobRequest $request)
     {
-        if ($this->checkPlane($this->company($request->company_id)->plan)) {
-            $job = Job::create([
-                'user_id' => auth('web')->user()->id,
-                'company_id' => companyId($request->company_id),
-                'incubator_key' => incubator_key(),
-                'plan_id' => findCompany($request->company_id)->plan->id,
-                'name' => $request->name,
-                'description' => $request->description,
-                'salary' => $request->salary,
-            ]);
+        $job = $this->jobservice->storeJob($request);
+        if ($job)
             return $this->withMessage('Success create job!');
-        }
-        //return Redirect::route('job.index')->with('message', 'Your Wallet is empty, Recharge your wallet!');
-        return $this->withMessage('Your Wallet is empty, Recharge your wallet!','error');
+        return $this->withMessage('Your Wallet is empty, Recharge your wallet!', 'error');
     }
 
     public function update(Job $job, UpdateJobRequest $request)

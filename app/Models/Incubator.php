@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\IncubatorDetailScope;
 use App\Traits\Searchable;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,26 @@ use Illuminate\Database\Eloquent\Model;
 class Incubator extends Model
 {
     use CrudTrait, HasFactory, Searchable;
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new IncubatorDetailScope());
+    }
+
+    public function scopePublished($query, $value = true)
+    {
+        return $query->whereStatus($value);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
 
     protected $fillable = [
         'key',
@@ -25,20 +46,12 @@ class Incubator extends Model
         'condition',
         'name',
         'email',
+        'status',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    function companies()
-   {
-       return $this->hasMany(Company::class);
-   }
 }

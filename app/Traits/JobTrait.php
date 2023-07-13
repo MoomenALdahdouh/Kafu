@@ -8,10 +8,10 @@ use App\Models\Job;
 
 trait JobTrait
 {
-    public static function company($company_id)
+    public static function isCompany($company_id)
     {
-        if (company())
-            return company();
+        if (auth('web')->user()->company)
+            return auth('web')->user()->company;
         else
             return Company::query()->find($company_id);
     }

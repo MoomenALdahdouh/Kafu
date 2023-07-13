@@ -6,11 +6,10 @@ use App\Http\Requests\StoreIncubatorRequest;
 use App\Http\Requests\UpdateIncubatorRequest;
 use App\Models\Incubator;
 use App\Providers\RouteServiceProvider;
+use App\Services\IncubatorService;
 use App\Traits\Messages;
 use App\Traits\UserTrait;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 
@@ -18,12 +17,16 @@ class IncubatorController extends Controller
 {
     use Messages, UserTrait;
 
+    protected $incubatorservice;
+
+    public function __construct(IncubatorService $incubatorservice)
+    {
+        $this->incubatorservice = $incubatorservice;
+    }
+
     public function index(Request $request)
     {
-        $data = Incubator::query()
-            ->orderByField($request->sort_by, $request->order_by)
-            ->search($request->search)
-            ->paginate($request->page_size ?? 10);
+        $data = $this->incubatorservice->getAllIncubators($request);
         return Inertia::render('incubator/index', [
             'items' => $data,
             'permissions' => getUserPermissions(),
@@ -37,25 +40,7 @@ class IncubatorController extends Controller
 
     public function store(StoreIncubatorRequest $request)
     {
-        $request_all = $request->all();
-        $request_all["type"] = 0;
-        $request_all["permission"] = 'Incubator';
-        $user = $this->createUser($request_all);
-        if ($user)
-            Incubator::create([
-                'key' => uniqid(),
-                'user_id' => $user->id,
-                'name' => $request->in_name,
-                'email' => $request->email,
-                'mobile' => $request->mobile,
-                'projects' => $request->projects,
-                'message' => $request->message,
-            ]);
-
-        event(new Registered($user));
-
-        Auth::guard('web')->login($user);
-
+        $this->incubatorservice->storeIncubator($request);
         return redirect(RouteServiceProvider::HOME);
     }
 

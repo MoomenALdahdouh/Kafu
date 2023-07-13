@@ -19,9 +19,9 @@ Route::resource('company', CompanyController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth:web','permission:companies']);
 
-Route::get('register/company', [CompanyController::class, 'create_company'])->name('company.register');
+Route::get('register/company', [CompanyController::class, 'create'])->name('company.register');
 
-Route::post('register/company', [CompanyController::class, 'store_company'])->name('company.register.store');
+Route::post('register/company', [CompanyController::class, 'store'])->name('company.register.store');
 
 Route::resource('job', JobController::class)
     ->only(['index', 'store', 'update', 'destroy'])

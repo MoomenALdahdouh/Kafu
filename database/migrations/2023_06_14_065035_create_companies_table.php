@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('country_code_id')->nullable()->constrained('country_codes');
             $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->tinyInteger('condition')->default(0)->comment('0:not approved, 1:approved');
+            $table->tinyInteger('status')->default(0)->comment('0:not published, 1:published, 2:blocked');
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ class CompanyPlan extends Model
         'price',
         'budget',
         'days',
+        'status',
     ];
 
     function user(){
