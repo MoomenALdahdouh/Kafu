@@ -25,6 +25,7 @@ class Plan extends Model
         'sort',*/
     ];
 
+
     public function features()
     {
         return $this->belongsToMany(Feature::class);

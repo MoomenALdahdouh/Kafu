@@ -52,66 +52,68 @@
                     }}
                 </v-toolbar>
                 <v-card-text class="pt-4">
-                    <v-text-field
-                        v-model="form.name"
-                        label="Company Name"
-                        :error-messages="form.errors.name"
-                        type="text"
-                        outlined
-                        dense
-                    />
-                    <v-text-field
-                        v-model="form.name_officer"
-                        label="Officer Name"
-                        :error-messages="form.errors.name_officer"
-                        type="text"
-                        outlined
-                        dense
-                    />
-                    <v-text-field
-                        v-model="form.email"
-                        label="Email"
-                        :error-messages="form.errors.email"
-                        outlined
-                        dense
-                    />
-                    <v-text-field
-                        v-model="form.mobile"
-                        label="Mobile"
-                        :error-messages="form.errors.mobile"
-                        outlined
-                        dense
-                    />
-                    <v-text-field
-                        v-model="form.password"
-                        prepend-inner-icon="mdi-lock"
-                        label="Password"
-                        outlined
-                        dense
-                        :error-messages="form.errors.password"
-                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="showPassword ? 'text' : 'password'"
-                        @click:append="showPassword = !showPassword"
-                    />
-                    <v-text-field
-                        v-model="form.password_confirmation"
-                        prepend-inner-icon="mdi-lock"
-                        label="Password Confirmation"
-                        :error-messages="form.errors.password_confirmation"
-                        outlined
-                        dense
-                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="showPassword ? 'text' : 'password'"
-                        @click:append="showPassword = !showPassword"
-                    />
-                    <!--          <v-textarea
-                                v-model="form.address"
-                                label="Address"
-                                :error-messages="form.errors.address"
-                                outlined
-                                dense
-                              />-->
-                    <div class="d-flex"></div>
+                    <v-form>
+                        <v-text-field
+                            v-model="form.name"
+                            label="Company Name"
+                            :error-messages="form.errors.name"
+                            type="text"
+                            outlined
+                            dense
+                        />
+                        <v-text-field
+                            v-model="form.name_officer"
+                            label="Officer Name"
+                            :error-messages="form.errors.name_officer"
+                            type="text"
+                            outlined
+                            dense
+                        />
+                        <v-text-field
+                            v-model="form.email"
+                            label="Email"
+                            :error-messages="form.errors.email"
+                            outlined
+                            dense
+                        />
+                        <v-text-field
+                            v-model="form.mobile"
+                            label="Mobile"
+                            :error-messages="form.errors.mobile"
+                            outlined
+                            dense
+                        />
+                        <v-text-field
+                            v-model="form.password"
+                            prepend-inner-icon="mdi-lock"
+                            label="Password"
+                            outlined
+                            dense
+                            :error-messages="form.errors.password"
+                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                            :type="showPassword ? 'text' : 'password'"
+                            @click:append="showPassword = !showPassword"
+                        />
+                        <v-text-field
+                            v-model="form.password_confirmation"
+                            prepend-inner-icon="mdi-lock"
+                            label="Password Confirmation"
+                            :error-messages="form.errors.password_confirmation"
+                            outlined
+                            dense
+                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                            :type="showPassword ? 'text' : 'password'"
+                            @click:append="showPassword = !showPassword"
+                        />
+                        <!--          <v-textarea
+                                    v-model="form.address"
+                                    label="Address"
+                                    :error-messages="form.errors.address"
+                                    outlined
+                                    dense
+                                  />-->
+                        <div class="d-flex"></div>
+                    </v-form>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel</v-btn>

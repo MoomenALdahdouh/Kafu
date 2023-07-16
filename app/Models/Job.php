@@ -28,6 +28,21 @@ class Job extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
+
+    public function getStatusAttribute($value)
+    {
+        switch ($value) {
+            case 0:
+                return "Pending";
+            case 1;
+                return "Published";
+        }
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -35,12 +50,13 @@ class Job extends Model
 
     public function getCreatedAtAttribute($value)
     {
+        if (str_contains(url()->current(), 'admin'))
+            return $value;
         return date('Y M d', strtotime($value)); // Customize the format as per your requirements
     }
 
     protected $fillable = [
         'user_id',
-        'company_id',
         'company_id',
         'incubator_key',
         'plan_id',
@@ -50,5 +66,6 @@ class Job extends Model
         'image',
         'tags',
         'salary',
+        'status',
     ];
 }

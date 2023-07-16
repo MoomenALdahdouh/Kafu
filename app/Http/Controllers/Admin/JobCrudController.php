@@ -11,12 +11,13 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
+
 class JobCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
@@ -45,8 +46,8 @@ class JobCrudController extends CrudController
         CRUD::column('name');
         CRUD::column('description');
         CRUD::column('salary');
-        CRUD::field('budget');
-
+        CRUD::column('budget');
+        CRUD::column('status');
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -66,12 +67,14 @@ class JobCrudController extends CrudController
 
         CRUD::field('user_id');
         CRUD::field('company_id');
-        CRUD::field('incubator_key');
+        //CRUD::field('incubator_key');
         CRUD::field('plan_id');
         CRUD::field('name');
         CRUD::field('description');
         CRUD::field('salary');
         CRUD::field('budget');
+        //CRUD::field(['name' => 'status', 'type' => 'checkbox', 'label' => 'Publish']);
+        CRUD::field('status')->label('Publish');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
