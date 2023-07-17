@@ -43,6 +43,13 @@ class Company extends Model
         return $this->hasMany(CompanyPlan::class);
     }
 
+    public function getCreatedAtAttribute($value)
+    {
+        if (str_contains(url()->current(), 'admin'))
+            return $value;
+        return date('Y M d', strtotime($value)); // Customize the format as per your requirements
+    }
+
     protected $fillable = [
         'key',
         'user_id',

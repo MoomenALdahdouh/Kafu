@@ -18,7 +18,7 @@ class Job extends Model
         static::addGlobalScope(new JobDetailScope());
     }
 
-    public function scopePublished($query, $value = true)
+    public function scopePublished($query, $value = 1)
     {
         return $query->whereStatus($value);
     }

@@ -75,7 +75,7 @@ class AdminAuthController extends Controller
 
     public function check_auth_type()
     {
-        if (auth("admin")->user()->status == 0)
+        if (auth()->user()->status == 0)
             return response()->json(['error_sing_in' => 'Your account has been blocked!']);
         return response()->json(['success' => "success sign"]);
 

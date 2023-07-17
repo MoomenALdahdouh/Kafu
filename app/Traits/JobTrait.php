@@ -3,16 +3,18 @@
 namespace App\Traits;
 
 use App\Models\Company;
-use App\Models\CompanyPlan;
-use App\Models\Job;
 
 trait JobTrait
 {
-    public static function isCompany($company_id)
+    public function isCompany($company_id)
     {
-        if (auth('web')->user()->company)
-            return auth('web')->user()->company;
-        else
+        if ($company_id)
             return Company::query()->find($company_id);
+        else
+            return auth('web')->user()->company;
+    }
+
+    public function getPlan($company_id){
+      return  $this->isCompany($company_id)->plans->where('status',1)->first();
     }
 }

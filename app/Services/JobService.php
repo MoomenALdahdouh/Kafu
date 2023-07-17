@@ -14,8 +14,8 @@ class JobService
 
     public function getAllJobs(Request $request)
     {
-        return Job::published()
-            ->forCompany()
+        return Job::/*published()*/
+        forCompany()
             ->forIncubator(incubator_key())
             ->orderByField($request->sort_by, $request->order_by)
             ->search($request->search)
@@ -24,17 +24,40 @@ class JobService
 
     public function storeJob(Request $request)
     {
-        if ($this->checkPlane($this->isCompany($request->company_id)->plan))
-            return Job::create([
+        if ($this->checkPlane($this->getPlan($request->company_id))) {
+            $job = Job::create([
                 'user_id' => auth('web')->user()->id,
                 'company_id' => companyId($request->company_id),
                 'incubator_key' => incubator_key(),
-                'plan_id' => findCompany($request->company_id)->plan->id,
+                'plan_id' => $this->getPlan($request->company_id)->id,
                 'name' => $request->name,
                 'description' => $request->description,
                 'salary' => $request->salary,
             ]);
+            if ($job) {
+                $this->sendJobNotification($job);
+                return $job;
+            }
+
+        }
         return null;
+    }
+
+    public function sendJobNotification($job)
+    {
+        $data = [
+            "title" => "Post New Job",
+            "message" => "The Company added new Job",
+            "description" => "",
+            "model" => get_class(new Job()),
+            "model_id" => $job->id,
+            "path" => "admin/job/$job->id/show",
+            "sender" => $job->user_id,
+            "receiver" => "",
+            "status" => 0,
+            "type" => 0,
+        ];
+        sendNotification($data);
     }
 
 }

@@ -11,6 +11,7 @@ use App\Traits\Messages;
 use App\Traits\PlanTrait;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
 class JobController extends Controller
 {
     use Messages, PlanTrait, JobTrait;
@@ -29,7 +30,8 @@ class JobController extends Controller
             'items' => $data,
             'companies' => incubator() ? incubator()->companies : [],
             'permissions' => getUserPermissions(),
-            'wallet' => $this->getWallet(getCompany()),
+            'wallet' => $this->getWallet(),
+            'notifications'=> getNotifications(auth("web")->user()->id),
         ]);
     }
 

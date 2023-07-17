@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\JobRequest;
+use App\Models\Job;
+use App\Services\JobAdminService;
+use App\Services\JobService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -19,12 +22,22 @@ class JobCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-
+   // use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
      * @return void
      */
+
+    protected $jobservice;
+
+    public function __construct(JobAdminService $jobservice)
+    {
+        parent::__construct();
+        $this->jobservice = $jobservice;
+    }
+
+
     public function setup()
     {
         CRUD::setModel(\App\Models\Job::class);
@@ -74,7 +87,7 @@ class JobCrudController extends CrudController
         CRUD::field('salary');
         CRUD::field('budget');
         //CRUD::field(['name' => 'status', 'type' => 'checkbox', 'label' => 'Publish']);
-        CRUD::field('status')->label('Publish');
+        CRUD::field('status')->label('Published');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -92,5 +105,11 @@ class JobCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function update(JobRequest $request)
+    {
+        $job = $this->jobservice->updateJob($request);
+        return redirect(backpack_url('job'))->with('success');
     }
 }

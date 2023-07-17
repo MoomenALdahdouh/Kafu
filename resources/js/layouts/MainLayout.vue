@@ -41,13 +41,43 @@
             <v-toolbar-title v-text="appName"/>
             <v-spacer/>
             <div class="d-flex align-center">
-                <v-icon dark>mdi-account</v-icon>
+                <v-menu offset-y v-model="showNotifications">
+                    <template v-slot:activator="{ on }">
+                        <v-badge  color="error" :content="notificationCount">
+                            <v-icon  v-on:click="openNotifications" dark>mdi-bell</v-icon>
+                        </v-badge>
+                    </template>
+                    <v-card>
+                        <v-list>
+                            <a v-for="notification in this.$page.props.notifications" :key="notification.id" :href="`/notifications/${notification.id}`">
+                                <v-card :class="{ 'not-seen': notification.status === 0, 'seen': notification.status === 1 }">
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-list-item-title>
+                                                <div>{{ notification.title }}</div>
+                                            </v-list-item-title>
+                                            <v-list-item-subtitle>
+                                                <div>{{ notification.message }}</div>
+                                            </v-list-item-subtitle>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-card>
+                            </a>
+                        </v-list>
+
+                    </v-card>
+                </v-menu>
+                <v-spacer/>
+                <v-icon class="ml-5" dark>mdi-account</v-icon>
                 <div class="pl-3">
                     <span class="body-1 font-weight-
                     medium">{{ user.name }}</span>
-                    <strong class="body-1 font-weight-medium success" v-if="hasPermission('company')">Wallet {{ wallet }} $</strong>
+                    <strong class="body-1 font-weight-medium success" v-if="hasPermission('company')">Wallet {{
+                            wallet
+                        }} $</strong>
                 </div>
             </div>
+
         </v-app-bar>
         <v-main>
             <v-container>
@@ -56,16 +86,12 @@
         </v-main>
     </v-app>
 </template>
-
 <script>
-//import ApplicationLogo from "../components/ApplicationLogo.vue";
-
-
 export default {
-    // components: {ApplicationLogo},
     data() {
         return {
             drawer: !this.$vuetify.breakpoint.smAndDown,
+            showNotifications: false,
             items: [
                 {icon: "mdi-apps", title: "Home", permission: "dashboard", to: "home"},
                 {icon: "mdi-apps", title: "Companies", permission: "companies", to: "company.index"},
@@ -85,6 +111,9 @@ export default {
         },
         wallet() {
             return this.$page.props.wallet;
+        },
+        notificationCount() {
+            return this.$page.props.notifications.length;
         },
         indexMenu() {
             const inertiaUrl = this.$inertia.page.url.split("?")[0];
@@ -126,6 +155,21 @@ export default {
         goToPage(page) {
             this.$inertia.visit(this.route(page));
         },
+        openNotifications() {
+            console.log(this.$page.props.notifications)
+            this.showNotifications = !this.showNotifications;
+        },
     },
 };
 </script>
+<style>
+.not-seen {
+    font-weight: bold;
+    color: red;
+}
+
+.seen {
+    color: green;
+}
+
+</style>

@@ -19,7 +19,8 @@ class HomeController extends Controller
     {
         return Inertia::render('home', [
             'permissions' => getUserPermissions(),
-            'wallet'=> auth()->user()->can('company') ? $this->getWallet(getCompany()) : '',
+            'wallet'=> auth("web")->user()->can('company') ? $this->getWallet() : '',
+            'notifications'=> getNotifications(auth("web")->user()->id),
         ]);
     }
 }

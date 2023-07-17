@@ -3,6 +3,57 @@
 
 use App\Models\Company;
 use App\Models\Job;
+use App\Models\Notification;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+
+function sendNotification($data)
+{
+    $notification = new Notification();
+    $notification->title = $data["title"];
+    $notification->message = $data["message"];
+    $notification->description = $data["description"];
+    $notification->model = $data["model"];
+    $notification->model_id = $data["model_id"];
+    $notification->path = $data["path"];
+    $notification->sender = $data["sender"];
+    $notification->receiver = $data["receiver"];
+    $notification->status = $data["status"];
+    $notification->type = $data["type"];
+    $notification->created_at = Carbon::now();
+    $notification->save();
+}
+
+function getNotifications($userId)
+{
+    return Notification::query()->where('receiver', $userId)->latest()->limit(10)->get();
+}
+
+function sendEmail($title, $name, $description_ar, $path, $send_to_id_fk, $receiver_email, $receiver_name, $model_fk_id, $sender_title, $sender_email, $sender_name)
+{
+    $data = [
+        'recipient' => $receiver_email,
+        'fromEmail' => "mmsss875@gmail.com",
+        'fromName' => "Kafu",
+        'sender_title' => $sender_title,
+        'sender_email' => $sender_email,
+        'sender_name' => $sender_name,
+        'subject' => $title,
+        'description' => $description_ar,
+        'user_name' => $receiver_name,
+        'name_ar' => $name,
+        'path' => $path,
+        'admin_id' => $send_to_id_fk,
+        'model_fk_id' => $model_fk_id,
+        'body' => $title, $name, $path, $receiver_email, $model_fk_id,
+    ];
+    Mail::send('admin.email.notification', $data, function ($message) use ($data) {
+        $message->to($data['recipient'])
+            ->from($data['fromEmail'], $data['fromName'])
+            ->subject($data['subject']);
+    });
+}
+
 
 function getUserPermissions()
 {

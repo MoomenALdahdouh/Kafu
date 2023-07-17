@@ -48,9 +48,9 @@
                 <v-btn x-small color="yellow" @click="editItem(item)">
                     <v-icon small> mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn x-small color="red" dark @click="deleteItem(item)">
-                    <v-icon small> mdi-delete</v-icon>
-                </v-btn>
+                <!--                <v-btn x-small color="red" dark @click="deleteItem(item)">
+                                    <v-icon small> mdi-delete</v-icon>
+                                </v-btn>-->
             </template>
         </v-data-table>
         <v-dialog v-model="dialog" max-width="500px" scrollable>
@@ -102,7 +102,7 @@
                 <v-card-actions>
                     <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel</v-btn>
                     <v-spacer/>
-                    <v-btn :loading="form.processing" color="primary" @click="submit"
+                    <v-btn color="primary" @click="confirmSubmit"
                     >Save
                     </v-btn
                     >
@@ -126,6 +126,20 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="confirmDialog" max-width="400px">
+            <v-card>
+                <v-card-title class="headline">Confirmation</v-card-title>
+                <v-card-text>
+                    Are you sure you want to post the job?
+                    <strong class="red--text text--darken-2 font-weight-bold">$50 </strong><strong>will be deducted from the wallet for this job.</strong>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="confirmDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" :loading="form.processing" text @click="submit">Submit</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </main-layout>
 </template>
 
@@ -145,6 +159,7 @@ export default {
                 {text: "Description", value: "description"},
                 /*{text: "Company", value: "company"},*/
                 {text: "Salary", value: "salary"},
+                {text: "Status", value: "status"},
                 {text: "Created At", value: "created_at"},
                 {text: "Actions", value: "action", sortable: false},
             ],
@@ -162,6 +177,7 @@ export default {
             ],
             dialog: false,
             dialogDelete: false,
+            confirmDialog: false,
             isUpdate: false,
             isLoading: false,
             isLoadingTable: false,
@@ -178,6 +194,7 @@ export default {
                 description: null,
                 salary: null,
                 company_id: null,
+                status: null,
             }),
         };
     },
@@ -238,6 +255,9 @@ export default {
             this.itemId = item.id;
             this.dialogDelete = true;
         },
+        confirmSubmit() {
+            this.confirmDialog = true;
+        },
         destroy() {
             this.form.delete(route("job.destroy", this.itemId), {
                 preverseScroll: true,
@@ -248,6 +268,7 @@ export default {
             });
         },
         submit() {
+            this.confirmDialog = false;
             if (this.isUpdate) {
                 this.form.put(route("job.update", this.itemId), {
                     preverseScroll: true,
@@ -266,6 +287,7 @@ export default {
                     onSuccess: (response) => {
                         this.isLoading = false;
                         this.dialog = false;
+                        this.confirmDialog = false;
                         this.form.reset();
                         this.handleMessage(response);
                     },
@@ -276,7 +298,6 @@ export default {
             }
         },
         handleMessage(response) {
-            console.log(response)
             this.isLoading = false;
             this.dialog = false;
             this.isUpdate = false;

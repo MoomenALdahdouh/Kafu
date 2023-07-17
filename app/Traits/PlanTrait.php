@@ -19,17 +19,20 @@ trait PlanTrait
         return false;
     }
 
-    public static function getWallet($company)
+    public static function getWallet()
     {
         if (auth()->user()->can('company')) {
             $plan = getCompany()->plans->where('status',1)->first();
-            $total_jobs_budget = Job::query()
+            $total_jobs_budget = Job::published()
                 ->where('company_id', $plan->company_id)
                 ->where('plan_id', $plan->id)
                 ->pluck('budget')
                 ->sum();
             if ($plan->budget - $total_jobs_budget > 0)
                 return $plan->budget - $total_jobs_budget;
+            else if ($plan->budget - $total_jobs_budget <! 0)
+                return $plan->budget - $total_jobs_budget;
+
         }
         return null;
     }
