@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Traits\UserTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +14,9 @@ use Inertia\Inertia;
 
 class AuthenticatedSessionController extends Controller
 {
+
+    use UserTrait;
+
     /**
      * Display the login view.
      *
@@ -28,11 +33,14 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      *
-     * @param  \App\Http\Requests\Auth\LoginRequest  $request
+     * @param \App\Http\Requests\Auth\LoginRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(LoginRequest $request)
     {
+
+        //$this->checkConfirmed($this->only('email'));
+
         $request->authenticate();
 
         $request->session()->regenerate();
@@ -43,7 +51,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
@@ -56,4 +64,22 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    public function account_confirm()
+    {
+        return Inertia::render('confirm/account_confirm');
+    }
+
+    public function confirm($token)
+    {
+        $subscriber = User::query()->where("remember_token", $token)->get()->first();
+        if (!$subscriber)
+            return redirect("login");
+        $subscriber->status = 1;
+        $subscriber->remember_token = null;
+        $subscriber->save();
+        return Inertia::render('confirm/done');
+    }
+
+
 }

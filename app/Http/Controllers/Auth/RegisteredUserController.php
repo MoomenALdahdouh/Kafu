@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
         $request_all["permission"] = 'Incubator';
         $user = $this->createUser($request_all);
         if ($user)
-           Incubator::create([
+            Incubator::create([
                 'key' => uniqid(),
                 'user_id' => $user->id,
                 'name' => $request->in_name,
@@ -45,8 +45,9 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::guard('web')->login($user);
+        // Auth::guard('web')->login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return Inertia::render('confirm/account_confirm');
+
     }
 }

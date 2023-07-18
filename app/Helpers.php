@@ -55,6 +55,8 @@ function sendEmail($title, $name, $description_ar, $path, $send_to_id_fk, $recei
 }
 
 
+
+
 function getUserPermissions()
 {
     return auth('web')->user()->getPermissionsViaRoles()->pluck('name');

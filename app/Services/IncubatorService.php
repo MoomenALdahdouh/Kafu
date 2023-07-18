@@ -40,7 +40,7 @@ class IncubatorService
 
         event(new Registered($user));
 
-        Auth::guard('web')->login($user);
+        //Auth::guard('web')->login($user);
     }
 
 }

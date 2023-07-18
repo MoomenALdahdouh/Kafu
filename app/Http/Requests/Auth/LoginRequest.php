@@ -2,15 +2,20 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
+use App\Traits\UserTrait;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class LoginRequest extends FormRequest
 {
+    use UserTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -41,10 +46,18 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
     public function authenticate($guard = 'web')
     {
+        $user = User::query()->where("email", $this->email)->get()->first();
+
+        if ($user->status == 0)
+            throw ValidationException::withMessages([
+                'email' => 'You not confirm your account, check your email!',
+            ]);
+
         $this->ensureIsNotRateLimited();
-        if (! Auth::guard($guard)->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (!Auth::guard($guard)->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -64,7 +77,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited()
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -87,6 +100,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::lower($this->input('email')).'|'.$this->ip();
+        return Str::lower($this->input('email')) . '|' . $this->ip();
     }
 }

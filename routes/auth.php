@@ -64,3 +64,6 @@ Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('account-confirm', [AuthenticatedSessionController::class, 'account_confirm'])->name('account_confirm');
+Route::get('confirm/{token}', [AuthenticatedSessionController::class, 'confirm'])->name('confirm');

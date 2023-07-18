@@ -35,4 +35,5 @@ Route::resource('plan', PlanController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth:web','permission:plans']);
 
+
 require __DIR__ . '/auth.php';
