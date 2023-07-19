@@ -2,7 +2,6 @@
 
 
 use App\Models\Company;
-use App\Models\Job;
 use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -20,8 +19,17 @@ function sendNotification($data)
     $notification->receiver = $data["receiver"];
     $notification->status = $data["status"];
     $notification->type = $data["type"];
+    $notification->sender_type = $data["sender_type"];
     $notification->created_at = Carbon::now();
     $notification->save();
+}
+
+function unreadNotificationsCount(){
+    return auth()->user()->unreadNotifications->count();
+}
+
+function notifications(){
+    return  auth()->user()->notifications;
 }
 
 function getNotifications($userId)

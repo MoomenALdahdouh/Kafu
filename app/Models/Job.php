@@ -35,12 +35,14 @@ class Job extends Model
 
     public function getStatusAttribute($value)
     {
-        switch ($value) {
-            case 0:
-                return "Pending";
-            case 1;
-                return "Published";
-        }
+        if (!str_contains(url()->current(),'edit'))
+            switch ($value) {
+                case 0:
+                    return "Pending";
+                case 1;
+                    return "Published";
+            } else
+            return $value;
     }
 
     public function user()

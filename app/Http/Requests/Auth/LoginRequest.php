@@ -51,10 +51,17 @@ class LoginRequest extends FormRequest
     {
         $user = User::query()->where("email", $this->email)->get()->first();
 
-        if ($user->status == 0)
-            throw ValidationException::withMessages([
-                'email' => 'You not confirm your account, check your email!',
-            ]);
+        if ($user){
+            if ($user->status == 0)
+                throw ValidationException::withMessages([
+                    'email' => 'You not confirm your account, check your email!',
+                ]);
+            if (url()->current() == url('login') && $user->type == 2)
+                throw ValidationException::withMessages([
+                    'email' => 'These credentials do not match our records.',
+                ]);
+
+        }
 
         $this->ensureIsNotRateLimited();
         if (!Auth::guard($guard)->attempt($this->only('email', 'password'), $this->boolean('remember'))) {

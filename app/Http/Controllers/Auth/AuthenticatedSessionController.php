@@ -39,8 +39,6 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
 
-        //$this->checkConfirmed($this->only('email'));
-
         $request->authenticate();
 
         $request->session()->regenerate();

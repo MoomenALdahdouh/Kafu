@@ -13,6 +13,6 @@ class JobDetailScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->with('company:id,name', 'user:id,name');
+        $builder->with('company:id,name', 'user:id,name,email');
     }
 }

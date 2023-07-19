@@ -87,7 +87,13 @@ class JobCrudController extends CrudController
         CRUD::field('salary');
         CRUD::field('budget');
         //CRUD::field(['name' => 'status', 'type' => 'checkbox', 'label' => 'Publish']);
-        CRUD::field('status')->label('Published');
+        CRUD::field('status') // Field name
+        ->type('checkbox') // Field type
+        ->label('Check to Published') // Field label
+        ->options([        // Map checkbox values to labels (optional)
+            0 => '0',
+            1 => '1',
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

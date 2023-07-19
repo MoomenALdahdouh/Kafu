@@ -26,6 +26,11 @@ return new class extends Migration
             $table->text('receiver')->nullable();
             $table->text('email')->nullable();
             $table->tinyInteger('type')->default(0)->comment("0:default, 1:");
+            $table->tinyInteger('sender_type')->default(0)->comment("0:admin, 1:receiver");
+            $table->string('notifiable_type')->nullable();
+            $table->unsignedBigInteger('notifiable_id')->nullable();
+            $table->text('data')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }

@@ -10,10 +10,12 @@ trait PlanTrait
     public static function checkPlane($active_plan)
     {
         $total_jobs_budget = Job::query()
+            ->where('status',1)
             ->where('company_id', $active_plan->company_id)
             ->where('plan_id', $active_plan->id)
             ->pluck('budget')
             ->sum();
+        //dd( $total_jobs_budget);
         if ($active_plan->budget > $total_jobs_budget && $active_plan->days > 0)
             return true;
         return false;

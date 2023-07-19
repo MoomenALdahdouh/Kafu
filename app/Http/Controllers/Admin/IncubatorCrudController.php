@@ -21,7 +21,7 @@ class IncubatorCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +33,7 @@ class IncubatorCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -41,28 +41,21 @@ class IncubatorCrudController extends CrudController
     {
         CRUD::column('key');
         CRUD::column('user_id');
-        CRUD::column('logo');
-        CRUD::column('image');
-        CRUD::column('name_officer');
-        CRUD::column('projects');
-        CRUD::column('country_code_id');
-        CRUD::column('country_id');
-        CRUD::column('message');
-        CRUD::column('password');
-        CRUD::column('condition');
         CRUD::column('name');
         CRUD::column('email');
+        CRUD::column('name_officer');
+        CRUD::column('projects');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -87,13 +80,13 @@ class IncubatorCrudController extends CrudController
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

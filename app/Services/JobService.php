@@ -46,7 +46,7 @@ class JobService
     public function sendJobNotification($job)
     {
         $data = [
-            "title" => "Post New Job",
+            "title" => "Posted New Job",
             "message" => "The Company added new Job",
             "description" => "",
             "model" => get_class(new Job()),
@@ -56,6 +56,7 @@ class JobService
             "receiver" => "",
             "status" => 0,
             "type" => 0,
+            "sender_type" => 1,//1:admin
         ];
         sendNotification($data);
     }
