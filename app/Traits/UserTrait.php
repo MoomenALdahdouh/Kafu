@@ -46,7 +46,7 @@ trait UserTrait
         $user = User::query()->where("email", $email)->get()->first();
 
         if ($user->status == 0)
-            return Inertia::render('confirm/account_confirm');
+            return Inertia::render('auth/account_confirm');
         else
             return true;
     }

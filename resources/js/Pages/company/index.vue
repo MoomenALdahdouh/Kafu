@@ -55,7 +55,7 @@
                     }}
                 </v-toolbar>
                 <v-card-text class="pt-4">
-                    <v-form>
+                    <v-form @submit.prevent="submit">
                         <v-text-field
                             v-model="form.name"
                             label="Company Name"
@@ -108,20 +108,13 @@
                             :type="showPassword ? 'text' : 'password'"
                             @click:append="showPassword = !showPassword"
                         />
-                        <!--          <v-textarea
-                                    v-model="form.address"
-                                    label="Address"
-                                    :error-messages="form.errors.address"
-                                    outlined
-                                    dense
-                                  />-->
                         <div class="d-flex"></div>
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel</v-btn>
                     <v-spacer/>
-                    <v-btn :loading="form.processing" color="primary" @click="submit"
+                    <v-btn :loading="form.processing" color="primary" type="submit"
                     >Save
                     </v-btn
                     >

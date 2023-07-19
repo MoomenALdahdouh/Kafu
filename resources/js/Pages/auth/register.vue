@@ -19,7 +19,7 @@
                                 <v-form @submit.prevent="register">
                                     <v-text-field
                                         v-model="form.name"
-                                        prepend-inner-icon="mdi-account"
+                                        prepend-inner-icon="mdi-home"
                                         label="Name"
                                         outlined
                                         dense
@@ -114,7 +114,6 @@
 </template>
 
 <script>
-//import ApplicationLogo from "../../components/ApplicationLogo.vue";
 import GuestLayout from '../../layouts/GuestLayout.vue';
 
 export default {

@@ -54,7 +54,7 @@ class LoginRequest extends FormRequest
         if ($user){
             if ($user->status == 0)
                 throw ValidationException::withMessages([
-                    'email' => 'You not confirm your account, check your email!',
+                    'email' => 'You not confirmed your account, check your email!',
                 ]);
             if (url()->current() == url('login') && $user->type == 2)
                 throw ValidationException::withMessages([

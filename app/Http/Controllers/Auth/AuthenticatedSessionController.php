@@ -65,7 +65,7 @@ class AuthenticatedSessionController extends Controller
 
     public function account_confirm()
     {
-        return Inertia::render('confirm/account_confirm');
+        return Inertia::render('auth/account_confirm');
     }
 
     public function confirm($token)
@@ -76,7 +76,7 @@ class AuthenticatedSessionController extends Controller
         $subscriber->status = 1;
         $subscriber->remember_token = null;
         $subscriber->save();
-        return Inertia::render('confirm/done');
+        return Inertia::render('auth/done');
     }
 
 

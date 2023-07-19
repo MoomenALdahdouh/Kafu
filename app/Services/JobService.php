@@ -14,8 +14,7 @@ class JobService
 
     public function getAllJobs(Request $request)
     {
-        return Job::/*published()*/
-        forCompany()
+        return Job::forCompany()
             ->forIncubator(incubator_key())
             ->orderByField($request->sort_by, $request->order_by)
             ->search($request->search)

@@ -291,9 +291,6 @@ export default {
                         this.form.reset();
                         this.handleMessage(response);
                     },
-                    onError: (response) => {
-                        //this.handleMessage(response);
-                    }
                 });
             }
         },

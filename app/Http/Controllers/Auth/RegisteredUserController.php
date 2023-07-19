@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
 
         // Auth::guard('web')->login($user);
 
-        return Inertia::render('confirm/account_confirm');
+        return Inertia::render('auth/account_confirm');
 
     }
 }
