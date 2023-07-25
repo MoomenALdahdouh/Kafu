@@ -14,15 +14,16 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-
 class JobCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+
     //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-   // use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
+
+    // use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -81,7 +82,7 @@ class JobCrudController extends CrudController
         CRUD::field('user_id');
         CRUD::field('company_id');
         //CRUD::field('incubator_key');
-        CRUD::field('plan_id');
+        //CRUD::field('plan_id');
         CRUD::field('name');
         CRUD::field('description');
         CRUD::field('salary');

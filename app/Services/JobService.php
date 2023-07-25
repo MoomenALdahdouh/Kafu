@@ -23,12 +23,13 @@ class JobService
 
     public function storeJob(Request $request)
     {
-        if ($this->checkPlane($this->getPlan($request->company_id))) {
+        //if ($this->checkPlane($this->getPlan($request->company_id))) {
+        if ($this->checkPlane(getCompany()->id)) {
             $job = Job::create([
                 'user_id' => auth('web')->user()->id,
                 'company_id' => companyId($request->company_id),
                 'incubator_key' => incubator_key(),
-                'plan_id' => $this->getPlan($request->company_id)->id,
+                //'plan_id' => $this->getPlan($request->company_id)->id,
                 'name' => $request->name,
                 'description' => $request->description,
                 'salary' => $request->salary,

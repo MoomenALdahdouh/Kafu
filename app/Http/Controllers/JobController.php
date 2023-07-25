@@ -31,7 +31,7 @@ class JobController extends Controller
             'companies' => incubator() ? incubator()->companies : [],
             'permissions' => getUserPermissions(),
             'wallet' => $this->getWallet(),
-            'notifications'=> getNotifications(auth("web")->user()->id),
+            'notifications' => getNotifications(auth("web")->user()->id),
         ]);
     }
 
@@ -45,8 +45,11 @@ class JobController extends Controller
 
     public function update(Job $job, UpdateJobRequest $request)
     {
-        $job->update($request->all());
-        return $this->withMessage('Success edit job!');
+        $job = $job->update($request->all());
+        if ($job)
+            return $this->withMessage('Error edit job!');
+        else
+            return $this->withMessage('Success edit job!');
     }
 
     public function destroy(Job $job)

@@ -24,4 +24,5 @@ Route::group([
     Route::crud('feature', 'FeatureCrudController');
     Route::crud('permission', 'PermissionCrudController');
     Route::crud('role', 'RoleCrudController');
+    Route::crud('job-post', 'JobPostCrudController');
 }); // this should be the absolute last line of this file

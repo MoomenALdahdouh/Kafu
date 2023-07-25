@@ -2,15 +2,27 @@
 
 namespace App\Traits;
 
+use App\Models\Company;
 use App\Models\CompanyPlan;
 use App\Models\Job;
+use App\Models\JobPost;
 
 trait PlanTrait
 {
-    public static function checkPlane($active_plan)
+    public static function checkPlane($company_id)
+    {
+        $company = Company::query()->find($company_id);
+        $jobPost = JobPost::query()->get()->last();
+        //dd($jobPost);
+        if ($company->wallet >= $jobPost->budget)
+            return true;
+        return false;
+    }
+
+    public static function checkPlane1($active_plan)
     {
         $total_jobs_budget = Job::query()
-            ->where('status',1)
+            ->where('status', 1)
             ->where('company_id', $active_plan->company_id)
             ->where('plan_id', $active_plan->id)
             ->pluck('budget')
@@ -24,7 +36,15 @@ trait PlanTrait
     public static function getWallet()
     {
         if (auth()->user()->can('company')) {
-            $plan = getCompany()->plans->where('status',1)->first();
+            return auth()->user()->company->wallet;
+        }
+        return null;
+    }
+
+    public static function getWallet1()
+    {
+        if (auth()->user()->can('company')) {
+            $plan = getCompany()->plans->where('status', 1)->first();
             $total_jobs_budget = Job::published()
                 ->where('company_id', $plan->company_id)
                 ->where('plan_id', $plan->id)
@@ -32,7 +52,7 @@ trait PlanTrait
                 ->sum();
             if ($plan->budget - $total_jobs_budget > 0)
                 return $plan->budget - $total_jobs_budget;
-            else if ($plan->budget - $total_jobs_budget <! 0)
+            else if ($plan->budget - $total_jobs_budget < !0)
                 return $plan->budget - $total_jobs_budget;
 
         }

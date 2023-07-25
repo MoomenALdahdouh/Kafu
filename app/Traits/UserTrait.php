@@ -20,25 +20,27 @@ trait UserTrait
             'remember_token' => $token,
         ]);
 
-        //send email verification
-        $user->assignRole($data['permission']);
-        $email = [
-            'recipient' => $data['email'],
-            'fromEmail' => "moomen.site@gmail.com",
-            'fromName' => "منصة كفو",
-            'sender_title' => "منصة كفو",
-            'sender_email' => "moomen.site@gmail.com",
-            'sender_name' => "الدعم الفني",
-            'subject' => "التحقق من البريد الالكتروني",
-            'token' => $token,
-        ];
-        Mail::send('confirm', $email, function ($message) use ($email) {
-            $message->to($email['recipient'])
-                ->from($email['fromEmail'], $email['fromName'])
-                ->subject($email['subject']);
-        });
-
-        return $user;
+        if ($user) {
+            //send email verification
+            $user->assignRole($data['permission']);
+            $email = [
+                'recipient' => $data['email'],
+                'fromEmail' => "moomen.site@gmail.com",
+                'fromName' => "منصة كفو",
+                'sender_title' => "منصة كفو",
+                'sender_email' => "moomen.site@gmail.com",
+                'sender_name' => "الدعم الفني",
+                'subject' => "التحقق من البريد الالكتروني",
+                'token' => $token,
+            ];
+            Mail::send('confirm', $email, function ($message) use ($email) {
+                $message->to($email['recipient'])
+                    ->from($email['fromEmail'], $email['fromName'])
+                    ->subject($email['subject']);
+            });
+            return $user;
+        }
+        return null;
     }
 
     public function checkConfirmed($email)

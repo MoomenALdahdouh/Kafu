@@ -58,6 +58,7 @@ class Company extends Model
         'name',
         'email',
         'mobile',
+        'wallet',
         'name_officer',
     ];
 

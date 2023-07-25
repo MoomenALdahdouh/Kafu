@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Company;
 use App\Models\Job;
+use App\Models\JobPost;
 use App\Traits\JobTrait;
 use App\Traits\PlanTrait;
 use Illuminate\Http\Request;
@@ -18,12 +20,17 @@ class JobAdminService
     {
 
         //dd($this->checkPlane($this->getPlan($request->company_id)));
-        if ($this->checkPlane($this->getPlan($request->company_id))) {
-            $requestData = $request->except(['id', '_token', '_method', '_http_referrer', '_save_action', 'plan_id']);
+        // if ($this->checkPlane($this->getPlan($request->company_id))) {
+        if ($this->checkPlane($request->company_id)) {
+            $requestData = $request->except(['id', '_token', '_method', '_http_referrer', '_save_action']);
+            $jobPost = JobPost::query()->get()->last();
             //dd($request);
             $job = Job::query()->find($request->id)->update($requestData);
             if ($job) {
                 $job = Job::findOrFail($request->id);
+                $comapny = Company::query()->find($job->company_id);
+                $comapny->wallet = $comapny->wallet - $jobPost->budget;
+                $comapny->save();
                 $this->sendJobNotification($job);
                 $this->sendJobEmail($job);
                 return $job;
@@ -35,7 +42,7 @@ class JobAdminService
 
     public function sendJobNotification($job)
     {
-       // dd(auth("backpack")->user());
+        // dd(auth("backpack")->user());
         $data = [
             "title" => "Admin Approved Your Job",
             "message" => "Your Job $job->name is Published now!",

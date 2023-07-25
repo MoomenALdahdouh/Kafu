@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('name_officer')->nullable();
             $table->string('email')->unique();
             $table->string('mobile')->nullable();
+            $table->double('wallet')->default(0);
             $table->foreignId('country_code_id')->nullable()->constrained('country_codes');
             $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->tinyInteger('condition')->default(0)->comment('0:not approved, 1:approved');

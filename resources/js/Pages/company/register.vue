@@ -69,19 +69,16 @@
                                         :type="showPassword ? 'text' : 'password'"
                                         @click:append="showPassword = !showPassword"
                                     />
-                                    <input type="hidden" v-model="incubatorKey"/>
+                                    <input type="hidden" v-model="this.$page.props.incubator_key"/>
                                     <div class="d-flex"></div>
+                                    <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel
+                                    </v-btn>
+                                    <v-spacer/>
+                                    <v-btn :loading="form.processing" color="primary" type="submit"
+                                    >Save
+                                    </v-btn>
                                 </v-form>
                             </v-card-text>
-                            <v-card-actions>
-                                <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel
-                                </v-btn>
-                                <v-spacer/>
-                                <v-btn :loading="form.processing" color="primary" type="submit"
-                                >Save
-                                </v-btn
-                                >
-                            </v-card-actions>
                         </v-card>
                     </v-col>
                 </v-row>
@@ -95,14 +92,15 @@ import ApplicationLogo from "../../components/ApplicationLogo.vue";
 import GuestLayout from '../../layouts/GuestLayout.vue';
 
 export default {
+    props: ["incubator_key"],
     components: {
         ApplicationLogo,
         GuestLayout,
     },
-    mounted() {
-        const urlParams = new URLSearchParams(window.location.search);
-        this.incubatorKey = urlParams.get('incubator');
-    },
+    /*mounted() {
+       //const urlParams = new URLSearchParams(window.location.search);
+        this.incubatorKey = this.$page.props.incubator_key;
+    },*/
     data() {
         return {
             showPassword: false,

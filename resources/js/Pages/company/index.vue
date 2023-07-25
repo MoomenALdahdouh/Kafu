@@ -92,9 +92,9 @@
                             label="Password"
                             outlined
                             dense
-                            :error-messages="form.errors.password"
                             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             :type="showPassword ? 'text' : 'password'"
+                            :error-messages="form.errors.password"
                             @click:append="showPassword = !showPassword"
                         />
                         <v-text-field
@@ -109,16 +109,15 @@
                             @click:append="showPassword = !showPassword"
                         />
                         <div class="d-flex"></div>
+                        <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel</v-btn>
+                        <v-spacer/>
+                        <v-btn :loading="form.processing" color="primary" type="submit"
+                        >Save
+                        </v-btn
+                        >
                     </v-form>
                 </v-card-text>
-                <v-card-actions>
-                    <v-btn :disabled="form.processing" text color="error" @click="dialog = false">Cancel</v-btn>
-                    <v-spacer/>
-                    <v-btn :loading="form.processing" color="primary" type="submit"
-                    >Save
-                    </v-btn
-                    >
-                </v-card-actions>
+
             </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500">
@@ -149,6 +148,7 @@ export default {
     //components: {MainLayout},
     data() {
         return {
+            showPassword: false,
             headers: [
                 {text: "No", value: "index", sortable: false},
                 {text: "Name", value: "name"},
