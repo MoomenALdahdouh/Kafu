@@ -7,7 +7,7 @@
                         <v-card>
                             <v-card-title class="d-flex align-center justify-center">
                                 <Link :href="route('/')">
-                                    <application-logo style="height: 75"/>
+                                    <application-logo style="height: 75px"/>
                                 </Link>
                             </v-card-title>
                             <v-card-text>
@@ -37,7 +37,7 @@
                                     />
                                     <v-text-field
                                         v-model="form.projects"
-                                        prepend-inner-icon="mdi-email"
+                                        prepend-inner-icon="mdi-gavel"
                                         label="Projects"
                                         type="number"
                                         outlined
@@ -55,21 +55,21 @@
                                     />
                                     <v-text-field
                                         v-model="form.mobile"
-                                        prepend-inner-icon="mdi-email"
+                                        prepend-inner-icon="mdi-phone"
                                         label="Mobile"
-                                        type="email"
+                                        type="tel"
                                         outlined
                                         dense
                                         :error-messages="form.errors.mobile"
                                     />
-                                    <v-text-field
+                                    <v-textarea
                                         v-model="form.message"
-                                        prepend-inner-icon="mdi-email"
+                                        prepend-inner-icon="mdi-message"
                                         label="Message"
-                                        type="email"
                                         outlined
                                         dense
                                         :error-messages="form.errors.message"
+                                        rows="4"
                                     />
                                     <v-text-field
                                         v-model="form.password"
@@ -115,9 +115,13 @@
 
 <script>
 import GuestLayout from '../../layouts/GuestLayout.vue';
+import ApplicationLogo from "../../components/ApplicationLogo";
 
 export default {
-    components: { GuestLayout},
+    components: {
+        ApplicationLogo,
+        GuestLayout,
+    },
     data() {
         return {
             showPassword: false,

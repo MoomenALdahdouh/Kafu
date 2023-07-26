@@ -12,7 +12,7 @@
                             </v-card-title>
                             <v-card-text>
                                 <p class="text-2xl font-weight-semibold text--primary mb-2">
-                                    Register your Incubators 🚀
+                                    Register your Company 🚀
                                 </p>
                             </v-card-text>
                             <v-card-text>
@@ -20,6 +20,7 @@
                                     <v-text-field
                                         v-model="form.name"
                                         label="Company Name"
+                                        prepend-inner-icon="mdi-home"
                                         :error-messages="form.errors.name"
                                         type="text"
                                         outlined
@@ -27,6 +28,7 @@
                                     />
                                     <v-text-field
                                         v-model="form.name_officer"
+                                        prepend-inner-icon="mdi-account"
                                         label="Officer Name"
                                         :error-messages="form.errors.name_officer"
                                         type="text"
@@ -35,14 +37,18 @@
                                     />
                                     <v-text-field
                                         v-model="form.email"
+                                        prepend-inner-icon="mdi-email"
                                         label="Email"
+                                        type="email"
                                         :error-messages="form.errors.email"
                                         outlined
                                         dense
                                     />
                                     <v-text-field
                                         v-model="form.mobile"
+                                        prepend-inner-icon="mdi-phone"
                                         label="Mobile"
+                                        type="tel"
                                         :error-messages="form.errors.mobile"
                                         outlined
                                         dense

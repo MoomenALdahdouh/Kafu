@@ -31,9 +31,5 @@ Route::resource('incubator', IncubatorController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth:web','permission:incubators']);
 
-Route::resource('plan', PlanController::class)
-    ->only(['index', 'store', 'update', 'destroy'])
-    ->middleware(['auth:web','permission:plans']);
-
 
 require __DIR__ . '/auth.php';

@@ -29,7 +29,7 @@ class CompanyController extends Controller
             'items' => $data,
             'incubator_key' => auth('web')->user()->incubator->key,
             'permissions' => getUserPermissions(),
-            'notifications'=> getNotifications(auth("web")->user()->id),
+            'notifications' => getNotifications(auth("web")->user()->id),
         ]);
     }
 
